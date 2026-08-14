@@ -1,0 +1,121 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "e2f1f0a1-b8d4-4f2a-8c3b-5e9a7d6c4b2a",
+  "packageName": "com.autome.mailpilot",
+  "developer": {
+    "name": "Autome",
+    "websiteUrl": "https://Solider1337.github.io/mailpilot/",
+    "privacyUrl": "https://Solider1337.github.io/mailpilot/src/privacy.html",
+    "termsOfUseUrl": "https://Solider1337.github.io/mailpilot/src/terms.html",
+    "mpnId": ""
+  },
+  "name": {
+    "short": "MailPilot AI",
+    "full": "MailPilot AI Assistant"
+  },
+  "description": {
+    "short": "AI email assistant that analyzes, prioritizes, and drafts replies.",
+    "full": "MailPilot is an AI-powered assistant that reads your incoming emails and automatically extracts tasks, priorities, dates, and amounts. It provides a quick summary and a generated draft reply using Google Gemini AI, all processed securely via your own API key directly from your browser."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#7c5cfc",
+  "extensions": [
+    {
+      "requirements": {
+        "scopes": [
+          "mail"
+        ],
+        "formFactors": [
+          "desktop"
+        ],
+        "capabilities": [
+          {
+            "name": "Mailbox",
+            "minVersion": "1.3"
+          }
+        ]
+      },
+      "runtimes": [
+        {
+          "id": "TaskPaneRuntime",
+          "type": "general",
+          "code": {
+            "page": "https://Solider1337.github.io/mailpilot/src/taskpane.html"
+          },
+          "lifetime": "short",
+          "actions": [
+            {
+              "id": "ShowTaskPaneAction",
+              "type": "openPage",
+              "view": "homepage"
+            }
+          ]
+        }
+      ],
+      "ribbons": [
+        {
+          "contexts": [
+            "mailRead"
+          ],
+          "tabs": [
+            {
+              "builtInTabId": "TabDefault",
+              "groups": [
+                {
+                  "id": "MailPilotGroup",
+                  "label": "MailPilot AI",
+                  "icons": [
+                    {
+                      "size": 16,
+                      "url": "https://Solider1337.github.io/mailpilot/assets/icon-16.png"
+                    },
+                    {
+                      "size": 32,
+                      "url": "https://Solider1337.github.io/mailpilot/assets/icon-32.png"
+                    },
+                    {
+                      "size": 80,
+                      "url": "https://Solider1337.github.io/mailpilot/assets/icon-80.png"
+                    }
+                  ],
+                  "controls": [
+                    {
+                      "id": "btnOpenTaskPane",
+                      "type": "button",
+                      "label": "MailPilot AI",
+                      "tooltip": "Open MailPilot AI to analyze this email",
+                      "actionId": "ShowTaskPaneAction",
+                      "icons": [
+                        {
+                          "size": 16,
+                          "url": "https://Solider1337.github.io/mailpilot/assets/icon-16.png"
+                        },
+                        {
+                          "size": 32,
+                          "url": "https://Solider1337.github.io/mailpilot/assets/icon-32.png"
+                        },
+                        {
+                          "size": 80,
+                          "url": "https://Solider1337.github.io/mailpilot/assets/icon-80.png"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "validDomains": [
+    "Solider1337.github.io",
+    "generativelanguage.googleapis.com"
+  ]
+}
