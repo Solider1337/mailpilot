@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MailPilot – AI Email Assistant</title>
+    <!-- Office.js MUST load from Microsoft CDN -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-BGKYvG5Y.js"></script>
+  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-KeZDzTPF.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header id="header">
+            <div class="logo">
+                <span class="logo-icon">✈️</span>
+                <span class="logo-text">MailPilot</span>
+            </div>
+            <div class="header-actions">
+                <button id="btn-settings-toggle" class="btn-icon-only" title="Ustawienia">⚙️</button>
+                <span class="badge badge-ai">AI</span>
+            </div>
+        </header>
+
+        <!-- Settings / Onboarding State -->
+        <div id="settings-state" class="state hidden">
+            <div class="card card-settings">
+                <div class="settings-header">
+                    <span class="settings-icon">🔑</span>
+                    <h2 class="settings-title">Konfiguracja MailPilot</h2>
+                    <p class="settings-subtitle">Podaj swój klucz API Google Gemini, aby rozpocząć</p>
+                </div>
+                <div class="settings-form">
+                    <label class="input-label" for="input-api-key">Klucz API Gemini</label>
+                    <div class="input-group">
+                        <input id="input-api-key" type="password" class="input-field"
+                               placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
+                        <button id="btn-toggle-key" class="btn-icon-only" title="Pokaż/ukryj klucz">👁️</button>
+                    </div>
+                    <p class="input-hint">
+                        Pobierz klucz z <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
+                        Klucz jest zapisywany tylko lokalnie w Twojej przeglądarce.
+                    </p>
+                    <button id="btn-save-key" class="btn btn-primary btn-full">
+                        <span class="btn-icon">💾</span> Zapisz i rozpocznij
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="state hidden">
+            <div class="loader-container">
+                <div class="loader-ring">
+                    <div></div><div></div><div></div><div></div>
+                </div>
+                <p class="loader-text">Analizuję email...</p>
+                <p class="loader-subtext">Gemini AI pracuje</p>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="state hidden">
+            <div class="error-container">
+                <span class="error-icon">⚠️</span>
+                <p class="error-title">Wystąpił błąd</p>
+                <p id="error-message" class="error-text"></p>
+                <button id="btn-retry" class="btn btn-primary">Spróbuj ponownie</button>
+            </div>
+        </div>
+
+        <!-- Results State -->
+        <div id="results-state" class="state hidden">
+            <!-- Category & Priority Card -->
+            <div class="card card-priority" id="card-priority">
+                <div class="card-header">
+                    <span class="category-badge" id="category-badge">
+                        <span id="category-icon" class="category-emoji"></span>
+                        <span id="category-name"></span>
+                    </span>
+                    <div class="priority-badge" id="priority-badge">
+                        <span class="priority-dot" id="priority-dot"></span>
+                        <span id="priority-label"></span>
+                    </div>
+                </div>
+                <p class="summary-text" id="summary-text"></p>
+                <div id="urgency-banner" class="urgency-banner hidden">
+                    <span class="urgency-icon">🔥</span>
+                    <span id="urgency-text"></span>
+                </div>
+            </div>
+
+            <!-- Spam/Marketing Banner -->
+            <div id="spam-banner" class="card card-spam hidden">
+                <span class="spam-icon">🛡️</span>
+                <div class="spam-content">
+                    <span class="spam-label">Wykryto:</span>
+                    <span id="spam-type" class="spam-type"></span>
+                </div>
+                <span class="spam-badge">Filtruj</span>
+            </div>
+
+            <!-- Draft Reply Card -->
+            <div id="card-draft" class="card card-draft hidden">
+                <div class="card-title">
+                    <span class="card-title-icon">✍️</span>
+                    Szkic odpowiedzi
+                </div>
+                <textarea id="draft-text" class="draft-textarea" rows="5" spellcheck="true"></textarea>
+                <div class="card-actions">
+                    <button id="btn-copy-draft" class="btn btn-secondary">
+                        <span class="btn-icon">📋</span> Kopiuj
+                    </button>
+                </div>
+            </div>
+
+            <!-- Extracted Data Card -->
+            <div id="card-extracted" class="card card-extracted hidden">
+                <div class="card-title">
+                    <span class="card-title-icon">📊</span>
+                    Wyciągnięte dane
+                </div>
+                <div id="extracted-dates" class="extracted-section hidden">
+                    <div class="extracted-label">📅 Terminy</div>
+                    <ul id="dates-list" class="extracted-list"></ul>
+                </div>
+                <div id="extracted-amounts" class="extracted-section hidden">
+                    <div class="extracted-label">💰 Kwoty</div>
+                    <ul id="amounts-list" class="extracted-list"></ul>
+                </div>
+                <div id="extracted-tasks" class="extracted-section hidden">
+                    <div class="extracted-label">✅ Zadania</div>
+                    <ul id="tasks-list" class="extracted-list"></ul>
+                </div>
+            </div>
+
+            <!-- Actions Card -->
+            <div class="card card-actions-card">
+                <button id="btn-apply-category" class="btn btn-primary btn-full">
+                    <span class="btn-icon">🏷️</span> Zastosuj kategorię
+                </button>
+                <button id="btn-reanalyze" class="btn btn-ghost btn-full">
+                    <span class="btn-icon">🔄</span> Analizuj ponownie
+                </button>
+            </div>
+        </div>
+
+        <!-- Demo Mode (outside Outlook) -->
+        <div id="demo-state" class="state hidden">
+            <div class="demo-container">
+                <span class="demo-icon">🧪</span>
+                <p class="demo-title">Tryb demo</p>
+                <p class="demo-text">Wklej treść emaila poniżej, aby przetestować analizę AI</p>
+                <input id="demo-subject" class="demo-input" type="text" placeholder="Temat emaila..." />
+                <input id="demo-sender" class="demo-input" type="text" placeholder="Nadawca (np. jan@firma.pl)..." />
+                <textarea id="demo-body" class="demo-textarea" rows="6" placeholder="Treść emaila..."></textarea>
+                <button id="btn-demo-analyze" class="btn btn-primary btn-full">
+                    <span class="btn-icon">🚀</span> Analizuj
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
