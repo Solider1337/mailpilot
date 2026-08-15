@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-BGKYvG5Y.js"></script>
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-LZqONgpG.js"></script>
   <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-KeZDzTPF.css">
 </head>
 <body>
@@ -17,37 +17,31 @@
         <!-- Header -->
         <header id="header">
             <div class="logo">
-                <span class="logo-icon">✈️</span>
+                <span class="logo-icon">✨</span>
                 <span class="logo-text">MailPilot</span>
             </div>
             <div class="header-actions">
-                <button id="btn-settings-toggle" class="btn-icon-only" title="Ustawienia">⚙️</button>
+                <span id="org-badge" class="badge badge-org hidden"></span>
                 <span class="badge badge-ai">AI</span>
             </div>
         </header>
 
-        <!-- Settings / Onboarding State -->
-        <div id="settings-state" class="state hidden">
+        <!-- License Error State -->
+        <div id="license-state" class="state hidden">
             <div class="card card-settings">
                 <div class="settings-header">
-                    <span class="settings-icon">🔑</span>
-                    <h2 class="settings-title">Konfiguracja MailPilot</h2>
-                    <p class="settings-subtitle">Podaj swój klucz API Google Gemini, aby rozpocząć</p>
+                    <span class="settings-icon">🔒</span>
+                    <h2 class="settings-title">Brak licencji</h2>
+                    <p class="settings-subtitle">Dostęp wymaga aktywnej subskrypcji.</p>
                 </div>
                 <div class="settings-form">
-                    <label class="input-label" for="input-api-key">Klucz API Gemini</label>
-                    <div class="input-group">
-                        <input id="input-api-key" type="password" class="input-field"
-                               placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
-                        <button id="btn-toggle-key" class="btn-icon-only" title="Pokaż/ukryj klucz">👁️</button>
-                    </div>
                     <p class="input-hint">
-                        Pobierz klucz z <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
-                        Klucz jest zapisywany tylko lokalnie w Twojej przeglądarce.
+                        Konto: <strong id="current-user-email">...</strong><br><br>
+                        Jeśli Twoja firma używa MailPilot, upewnij się, że Twój administrator przypisał licencję. W przeciwnym razie możesz wykupić prywatny pakiet.
                     </p>
-                    <button id="btn-save-key" class="btn btn-primary btn-full">
-                        <span class="btn-icon">💾</span> Zapisz i rozpocznij
-                    </button>
+                    <a href="https://autome.github.io/mailpilot/checkout" target="_blank" rel="noopener" class="btn btn-primary btn-full">
+                        <span class="btn-icon">💳</span> Odblokuj dostęp (5$/msc)
+                    </a>
                 </div>
             </div>
         </div>
