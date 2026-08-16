@@ -82,7 +82,7 @@
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="MailPilot AI"/>
-        <bt:String id="btnLabel" DefaultValue="MailPilot AI"/>
+        <bt:String id="btnLabel" DefaultValue="Analizuj"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="btnTooltip" DefaultValue="Analizuj tego maila z AI"/>
