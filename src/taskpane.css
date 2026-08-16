@@ -43,23 +43,7 @@
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* ======== Corporate Slate Dark Theme ======== */
-    --bg-primary: #0F172A; /* Slate 900 */
-    --bg-secondary: #1E293B; /* Slate 800 */
-    --bg-card: #1E293B;
-    --bg-card-hover: #334155; /* Slate 700 */
-    --bg-glass: rgba(30, 41, 59, 0.8);
 
-    --text-primary: #F8FAFC;
-    --text-secondary: #CBD5E1;
-    --text-muted: #64748B;
-
-    --border: #334155;
-    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border);
-  }
-}
 
 /* Reset & Base */
 *, *::before, *::after {
