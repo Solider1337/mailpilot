@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-CeEI_ly0.js"></script>
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-Dyqzd7SW.js"></script>
   <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-C_7w0dlQ.css">
 </head>
 <body>
@@ -98,18 +98,30 @@
             </div>
 
             <!-- Draft & Generate -->
-            <div class="section-title mt-2">Draft & Generate</div>
+            <div class="section-title mt-2">✨ Mail Maestro Mode</div>
             <div id="card-draft" class="card card-draft">
-                <div class="draft-header">
-                    <label class="draft-label">Draft Style</label>
-                    <select id="draft-selector" class="draft-selector"></select>
+                <div class="draft-tabs" style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <button id="tab-generate" class="btn btn-primary" style="flex:1; padding: 6px;">Odpisz</button>
+                    <button id="tab-improve" class="btn btn-secondary" style="flex:1; padding: 6px;">Popraw tekst</button>
                 </div>
-                <textarea id="draft-text" class="draft-textarea" rows="4" spellcheck="true" placeholder="Describe the response..."></textarea>
                 
-                <div class="draft-actions">
-                    <button id="btn-copy-draft" class="btn btn-secondary">
-                        <span class="btn-icon">📋</span> Copy
+                <div id="draft-input-area">
+                    <label id="draft-prompt-label" class="draft-label">Krótka instrukcja dla AI:</label>
+                    <textarea id="draft-prompt" class="draft-textarea" rows="2" placeholder="np. Zgódź się i zaproponuj czwartek..."></textarea>
+                    <button id="btn-generate-draft" class="btn btn-primary btn-full mt-1">
+                        <span class="btn-icon" id="draft-btn-icon">✨</span> <span id="draft-btn-text">Generuj odpowiedź</span>
                     </button>
+                </div>
+
+                <div id="draft-result-area" class="hidden mt-2" style="border-top: 1px solid var(--border-color); padding-top: 10px;">
+                    <label class="draft-label">Wynik:</label>
+                    <textarea id="draft-text" class="draft-textarea" rows="4" spellcheck="true"></textarea>
+                    
+                    <div class="draft-actions mt-1">
+                        <button id="btn-copy-draft" class="btn btn-secondary btn-full">
+                            <span class="btn-icon">📋</span> Kopiuj
+                        </button>
+                    </div>
                 </div>
             </div>
 
