@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-q2wjS6OY.js"></script>
-  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-4rRnVIgu.css">
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-mGHfIPJy.js"></script>
+  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-CLGtARW1.css">
 </head>
 <body>
     <div id="app">
@@ -69,40 +69,15 @@
 
         <!-- Results State -->
         <div id="results-state" class="state hidden">
-            <!-- Category & Priority Card -->
-            <div class="card card-priority" id="card-priority">
-                <div class="card-header">
-                    <span class="category-badge" id="category-badge">
-                        <span id="category-icon" class="category-emoji"></span>
-                        <span id="category-name"></span>
-                    </span>
-                    <div class="priority-badge" id="priority-badge">
-                        <span class="priority-dot" id="priority-dot"></span>
-                        <span id="priority-label"></span>
-                    </div>
-                </div>
-                <div class="tone-badge hidden" id="tone-badge">
-                    <span id="tone-icon" class="tone-emoji">🎭</span>
-                    <span id="tone-label"></span>
-                </div>
-                <p class="summary-text" id="summary-text"></p>
-                <div id="urgency-banner" class="urgency-banner hidden">
-                    <span class="urgency-icon">🔥</span>
-                    <span id="urgency-text"></span>
-                </div>
-            </div>
-
-            <!-- Spam/Marketing Banner -->
+            
+            <!-- Red Flags & Spam (Keep at top for security) -->
             <div id="spam-banner" class="card card-spam hidden">
                 <span class="spam-icon">🛡️</span>
                 <div class="spam-content">
                     <span class="spam-label">Wykryto:</span>
                     <span id="spam-type" class="spam-type"></span>
                 </div>
-                <span class="spam-badge">Filtruj</span>
             </div>
-
-            <!-- Red Flags Banner -->
             <div id="redflags-banner" class="card card-danger hidden">
                 <span class="danger-icon">🚩</span>
                 <div class="danger-content">
@@ -111,54 +86,77 @@
                 </div>
             </div>
 
-            <!-- Draft Reply Card -->
-            <div id="card-draft" class="card card-draft hidden">
-                <div class="card-title draft-title-row">
-                    <div>
-                        <span class="card-title-icon">✍️</span>
-                        Szkic odpowiedzi
+            <!-- Summary Section -->
+            <div class="section-title">Summary</div>
+            <div class="card card-summary">
+                <div class="card-subtitle">Key Takeaways</div>
+                <div class="summary-content">
+                    <div class="tone-badge hidden" id="tone-badge">
+                        <span id="tone-icon" class="tone-emoji">🎭</span>
+                        <span id="tone-label"></span>
                     </div>
+                    <ul id="summary-list" class="summary-list">
+                        <li id="summary-text"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Action Items & Tasks -->
+            <div id="section-tasks" class="hidden">
+                <div class="section-title">Action Items & Tasks</div>
+                <div id="tasks-grid" class="tasks-grid">
+                    <!-- Tasks will be injected here -->
+                </div>
+            </div>
+
+            <!-- Extracted Entities -->
+            <div id="section-entities" class="hidden">
+                <div class="section-title">Extracted Entities</div>
+                
+                <div id="extracted-contacts" class="extracted-subgroup hidden">
+                    <div class="subgroup-title">Contacts</div>
+                    <div id="contacts-grid" class="contacts-grid">
+                        <!-- Contacts injected here -->
+                    </div>
+                </div>
+
+                <div id="extracted-dates" class="extracted-subgroup hidden">
+                    <div class="subgroup-title">Dates/Events</div>
+                    <div id="dates-list" class="entities-list">
+                        <!-- Dates injected here -->
+                    </div>
+                </div>
+
+                <div id="extracted-amounts" class="extracted-subgroup hidden">
+                    <div class="subgroup-title">Financials</div>
+                    <div id="amounts-list" class="entities-list">
+                        <!-- Amounts injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Draft & Generate -->
+            <div class="section-title mt-2">Draft & Generate</div>
+            <div id="card-draft" class="card card-draft">
+                <div class="draft-header">
+                    <label class="draft-label">Draft Style</label>
                     <select id="draft-selector" class="draft-selector"></select>
                 </div>
-                <textarea id="draft-text" class="draft-textarea" rows="5" spellcheck="true"></textarea>
-                <div class="card-actions">
+                <textarea id="draft-text" class="draft-textarea" rows="4" spellcheck="true" placeholder="Describe the response..."></textarea>
+                
+                <div class="draft-actions">
                     <button id="btn-copy-draft" class="btn btn-secondary">
-                        <span class="btn-icon">📋</span> Kopiuj
+                        <span class="btn-icon">📋</span> Copy
                     </button>
+                    <!-- <button id="btn-generate" class="btn btn-primary-action">
+                        <span class="btn-icon">✨</span> Generate Draft
+                    </button> -->
                 </div>
             </div>
 
-            <!-- Extracted Data Card -->
-            <div id="card-extracted" class="card card-extracted hidden">
-                <div class="card-title">
-                    <span class="card-title-icon">📊</span>
-                    Wyciągnięte dane
-                </div>
-                <div id="extracted-dates" class="extracted-section hidden">
-                    <div class="extracted-label">📅 Terminy</div>
-                    <ul id="dates-list" class="extracted-list"></ul>
-                </div>
-                <div id="extracted-amounts" class="extracted-section hidden">
-                    <div class="extracted-label">💰 Kwoty</div>
-                    <ul id="amounts-list" class="extracted-list"></ul>
-                </div>
-                <div id="extracted-tasks" class="extracted-section hidden">
-                    <div class="extracted-label">✅ Zadania</div>
-                    <ul id="tasks-list" class="extracted-list"></ul>
-                </div>
-                <div id="extracted-contacts" class="extracted-section hidden">
-                    <div class="extracted-label">📇 Kontakty</div>
-                    <ul id="contacts-list" class="extracted-list"></ul>
-                </div>
-                <div id="extracted-followup" class="extracted-section hidden">
-                    <div class="extracted-label">⏰ Follow-up</div>
-                    <p id="followup-text" class="extracted-text"></p>
-                </div>
-            </div>
-
-            <!-- Actions Card -->
-            <div class="card card-actions-card">
-                <button id="btn-apply-category" class="btn btn-primary btn-full">
+            <!-- Actions Card (Re-analyze, etc) -->
+            <div class="card card-actions-card mt-2">
+                <button id="btn-apply-category" class="btn btn-primary btn-full hidden">
                     <span class="btn-icon">🏷️</span> Zastosuj kategorię
                 </button>
                 <button id="btn-reanalyze" class="btn btn-ghost btn-full">
