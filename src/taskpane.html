@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-LZqONgpG.js"></script>
-  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-KeZDzTPF.css">
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-D3k2GXV5.js"></script>
+  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-NJcFeDkt.css">
 </head>
 <body>
     <div id="app">
@@ -81,6 +81,10 @@
                         <span id="priority-label"></span>
                     </div>
                 </div>
+                <div class="tone-badge hidden" id="tone-badge">
+                    <span id="tone-icon" class="tone-emoji">🎭</span>
+                    <span id="tone-label"></span>
+                </div>
                 <p class="summary-text" id="summary-text"></p>
                 <div id="urgency-banner" class="urgency-banner hidden">
                     <span class="urgency-icon">🔥</span>
@@ -98,11 +102,32 @@
                 <span class="spam-badge">Filtruj</span>
             </div>
 
+            <!-- Red Flags Banner -->
+            <div id="redflags-banner" class="card card-danger hidden">
+                <span class="danger-icon">🚩</span>
+                <div class="danger-content">
+                    <span class="danger-label">Wykryto ryzyko:</span>
+                    <ul id="redflags-list" class="danger-list"></ul>
+                </div>
+            </div>
+
+            <!-- Intent Translation Card -->
+            <div id="card-intent" class="card card-info hidden">
+                <div class="card-title">
+                    <span class="card-title-icon">🔍</span>
+                    Co nadawca miał na myśli?
+                </div>
+                <p id="intent-text" class="intent-text"></p>
+            </div>
+
             <!-- Draft Reply Card -->
             <div id="card-draft" class="card card-draft hidden">
-                <div class="card-title">
-                    <span class="card-title-icon">✍️</span>
-                    Szkic odpowiedzi
+                <div class="card-title draft-title-row">
+                    <div>
+                        <span class="card-title-icon">✍️</span>
+                        Szkic odpowiedzi
+                    </div>
+                    <select id="draft-selector" class="draft-selector"></select>
                 </div>
                 <textarea id="draft-text" class="draft-textarea" rows="5" spellcheck="true"></textarea>
                 <div class="card-actions">
@@ -129,6 +154,14 @@
                 <div id="extracted-tasks" class="extracted-section hidden">
                     <div class="extracted-label">✅ Zadania</div>
                     <ul id="tasks-list" class="extracted-list"></ul>
+                </div>
+                <div id="extracted-contacts" class="extracted-section hidden">
+                    <div class="extracted-label">📇 Kontakty</div>
+                    <ul id="contacts-list" class="extracted-list"></ul>
+                </div>
+                <div id="extracted-followup" class="extracted-section hidden">
+                    <div class="extracted-label">⏰ Follow-up</div>
+                    <p id="followup-text" class="extracted-text"></p>
                 </div>
             </div>
 
