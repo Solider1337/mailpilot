@@ -167,21 +167,19 @@ async function analyzeEmailData(emailData) {
 // ──────────────────────────────────────
 
 function renderResults(data) {
-  // Category
-  document.getElementById('category-icon').textContent = data.category_icon || '📧';
-  document.getElementById('category-name').textContent = data.category || 'Inne';
+  // Tone
+  const toneBadge = document.getElementById('tone-badge');
+  if (toneBadge) {
+    if (data.tone) {
+      document.getElementById('tone-label').textContent = data.tone;
+      toneBadge.classList.remove('hidden');
+    } else {
+      toneBadge.classList.add('hidden');
+    }
+  }
 
   // Summary
   document.getElementById('summary-text').textContent = data.summary || '';
-
-  // Urgency
-  const urgencyBanner = document.getElementById('urgency-banner');
-  if (priority >= 4 && data.urgency_reason) {
-    document.getElementById('urgency-text').textContent = data.urgency_reason;
-    urgencyBanner.classList.remove('hidden');
-  } else {
-    urgencyBanner.classList.add('hidden');
-  }
 
   // Spam banner
   const spamBanner = document.getElementById('spam-banner');
