@@ -171,22 +171,6 @@ function renderResults(data) {
   document.getElementById('category-icon').textContent = data.category_icon || '📧';
   document.getElementById('category-name').textContent = data.category || 'Inne';
 
-  // Priority
-  const priority = data.priority || 2;
-  const priorityBadge = document.getElementById('priority-badge');
-  priorityBadge.className = `priority-badge priority-${priority}`;
-  document.getElementById('priority-label').textContent =
-    PRIORITY_LABELS[priority] || 'Normalny';
-
-  // Tone
-  const toneBadge = document.getElementById('tone-badge');
-  if (data.tone) {
-    document.getElementById('tone-label').textContent = data.tone;
-    toneBadge.classList.remove('hidden');
-  } else {
-    toneBadge.classList.add('hidden');
-  }
-
   // Summary
   document.getElementById('summary-text').textContent = data.summary || '';
 
@@ -276,19 +260,14 @@ function renderResults(data) {
   }
 
   // Extracted data
-  const hasExtracted = renderExtractedData(data);
-  const extractedCard = document.getElementById('card-extracted');
-  if (hasExtracted) {
-    extractedCard.classList.remove('hidden');
-  } else {
-    extractedCard.classList.add('hidden');
-  }
+  renderExtractedData(data);
 
   bindActions();
 }
 
 function renderExtractedData(data) {
-  let hasAny = false;
+  let hasEntities = false;
+  let hasTasks = false;
 
   // Dates
   const datesSection = document.getElementById('extracted-dates');
@@ -296,13 +275,13 @@ function renderExtractedData(data) {
   datesList.innerHTML = '';
   if (data.extracted_dates && data.extracted_dates.length > 0) {
     data.extracted_dates.forEach((d) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="data-value">${esc(d.date)}</span>
-                       <span class="data-context">— ${esc(d.context)}</span>`;
-      datesList.appendChild(li);
+      const div = document.createElement('div');
+      div.className = 'entity-card';
+      div.innerHTML = `<strong>${esc(d.date)}</strong> - ${esc(d.context)}`;
+      datesList.appendChild(div);
     });
     datesSection.classList.remove('hidden');
-    hasAny = true;
+    hasEntities = true;
   } else {
     datesSection.classList.add('hidden');
   }
@@ -313,68 +292,72 @@ function renderExtractedData(data) {
   amountsList.innerHTML = '';
   if (data.extracted_amounts && data.extracted_amounts.length > 0) {
     data.extracted_amounts.forEach((a) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="data-value">${esc(a.value)} ${esc(a.currency)}</span>
-                       <span class="data-context">— ${esc(a.context)}</span>`;
-      amountsList.appendChild(li);
+      const div = document.createElement('div');
+      div.className = 'entity-card';
+      div.innerHTML = `<strong>${esc(a.value)} ${esc(a.currency)}</strong> - ${esc(a.context)}`;
+      amountsList.appendChild(div);
     });
     amountsSection.classList.remove('hidden');
-    hasAny = true;
+    hasEntities = true;
   } else {
     amountsSection.classList.add('hidden');
   }
 
   // Tasks
-  const tasksSection = document.getElementById('extracted-tasks');
-  const tasksList = document.getElementById('tasks-list');
-  tasksList.innerHTML = '';
+  const tasksSection = document.getElementById('section-tasks');
+  const tasksGrid = document.getElementById('tasks-grid');
+  tasksGrid.innerHTML = '';
   if (data.extracted_tasks && data.extracted_tasks.length > 0) {
-    data.extracted_tasks.forEach((t) => {
-      const li = document.createElement('li');
-      const dl = t.deadline ? ` (do: ${esc(t.deadline)})` : '';
-      li.innerHTML = `<span class="data-value">•</span>
-                       <span class="data-context">${esc(t.task)}${dl}</span>`;
-      tasksList.appendChild(li);
+    data.extracted_tasks.forEach((t, i) => {
+      const div = document.createElement('div');
+      div.className = 'task-card';
+      div.innerHTML = `
+        <div class="task-header">
+          <span class="task-label">Task ${i + 1}</span>
+        </div>
+        <div class="task-title">${esc(t.task)}</div>
+        ${t.deadline ? `<div class="task-time">${esc(t.deadline)}</div>` : ''}
+      `;
+      tasksGrid.appendChild(div);
     });
     tasksSection.classList.remove('hidden');
-    hasAny = true;
+    hasTasks = true;
   } else {
     tasksSection.classList.add('hidden');
   }
 
   // Contacts
   const contactsSection = document.getElementById('extracted-contacts');
-  const contactsList = document.getElementById('contacts-list');
-  if (contactsList) {
-    contactsList.innerHTML = '';
+  const contactsGrid = document.getElementById('contacts-grid');
+  if (contactsGrid) {
+    contactsGrid.innerHTML = '';
     if (data.extracted_contacts && data.extracted_contacts.length > 0) {
       data.extracted_contacts.forEach((c) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="data-value">${esc(c.name)}</span>
-                         <span class="data-context">— ${esc(c.info)}</span>`;
-        contactsList.appendChild(li);
+        const div = document.createElement('div');
+        div.className = 'contact-card';
+        const initial = c.name ? c.name.charAt(0).toUpperCase() : '?';
+        div.innerHTML = `
+          <div class="contact-avatar">${initial}</div>
+          <div class="contact-info">
+            <div class="contact-name">${esc(c.name)}</div>
+            <div class="contact-role">${esc(c.info)}</div>
+          </div>
+        `;
+        contactsGrid.appendChild(div);
       });
       contactsSection.classList.remove('hidden');
-      hasAny = true;
+      hasEntities = true;
     } else {
       contactsSection.classList.add('hidden');
     }
   }
 
-  // Follow-up
-  const followupSection = document.getElementById('extracted-followup');
-  const followupText = document.getElementById('followup-text');
-  if (followupSection && followupText) {
-    if (data.follow_up_suggestion) {
-      followupText.textContent = data.follow_up_suggestion;
-      followupSection.classList.remove('hidden');
-      hasAny = true;
-    } else {
-      followupSection.classList.add('hidden');
-    }
+  const entitiesSection = document.getElementById('section-entities');
+  if (hasEntities) {
+    entitiesSection.classList.remove('hidden');
+  } else {
+    entitiesSection.classList.add('hidden');
   }
-
-  return hasAny;
 }
 
 // ──────────────────────────────────────
