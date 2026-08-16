@@ -38,9 +38,15 @@ if (typeof Office !== 'undefined') {
       isOutlookContext = true;
       userEmail = Office.context.mailbox.userProfile.emailAddress;
       
-      // Nasłuchuj zmiany zaznaczonego maila (dzięki temu wtyczka może być przypięta "Pinnable")
+      // Nasłuchuj zmiany zaznaczonego maila
       Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, function() {
-        analyzeCurrentEmail();
+        // Natychmiast pokaż ekran ładowania, żeby użytkownik wiedział, że coś się dzieje
+        showState('loading-state');
+        
+        // Zastosuj małe opóźnienie, aby Outlook zdążył podmienić 'Office.context.mailbox.item' w pamięci
+        setTimeout(() => {
+          analyzeCurrentEmail();
+        }, 500);
       });
 
       analyzeCurrentEmail();
