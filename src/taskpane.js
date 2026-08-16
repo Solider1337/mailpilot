@@ -37,6 +37,12 @@ if (typeof Office !== 'undefined') {
     if (info.host === Office.HostType.Outlook) {
       isOutlookContext = true;
       userEmail = Office.context.mailbox.userProfile.emailAddress;
+      
+      // Nasłuchuj zmiany zaznaczonego maila (dzięki temu wtyczka może być przypięta "Pinnable")
+      Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, function() {
+        analyzeCurrentEmail();
+      });
+
       analyzeCurrentEmail();
     } else {
       initDemoMode();
