@@ -383,6 +383,20 @@ body::before {
   font-weight: 500;
 }
 
+.tone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  background: rgba(124, 92, 252, 0.1);
+  border: 1px solid rgba(124, 92, 252, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--accent-start);
+  font-weight: 500;
+}
+
 .urgency-icon {
   font-size: 1rem;
   animation: blink 1s ease-in-out infinite;
@@ -428,7 +442,81 @@ body::before {
   border: 1px solid rgba(237, 137, 54, 0.3);
 }
 
+/* ======== Red Flags Banner ======== */
+.card-danger {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(252, 81, 133, 0.08);
+  border-color: rgba(252, 81, 133, 0.2);
+}
+
+.danger-icon {
+  font-size: 1.3rem;
+  margin-top: 2px;
+}
+
+.danger-content {
+  flex: 1;
+}
+
+.danger-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--danger);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.danger-list {
+  list-style-type: disc;
+  padding-left: 18px;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.danger-list li {
+  margin-bottom: 3px;
+}
+
+/* ======== Intent Card ======== */
+.card-info {
+  background: rgba(43, 219, 219, 0.05);
+  border-color: rgba(43, 219, 219, 0.2);
+}
+
+.intent-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
 /* ======== Draft Card ======== */
+.draft-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.draft-selector {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  outline: none;
+  font-family: var(--font);
+  cursor: pointer;
+  max-width: 150px;
+}
+
+.draft-selector:focus {
+  border-color: var(--accent-start);
+}
+
 .draft-textarea {
   width: 100%;
   padding: 10px 12px;

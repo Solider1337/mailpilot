@@ -16,37 +16,31 @@
         <!-- Header -->
         <header id="header">
             <div class="logo">
-                <span class="logo-icon">✈️</span>
+                <span class="logo-icon">✨</span>
                 <span class="logo-text">MailPilot</span>
             </div>
             <div class="header-actions">
-                <button id="btn-settings-toggle" class="btn-icon-only" title="Ustawienia">⚙️</button>
+                <span id="org-badge" class="badge badge-org hidden"></span>
                 <span class="badge badge-ai">AI</span>
             </div>
         </header>
 
-        <!-- Settings / Onboarding State -->
-        <div id="settings-state" class="state hidden">
+        <!-- License Error State -->
+        <div id="license-state" class="state hidden">
             <div class="card card-settings">
                 <div class="settings-header">
-                    <span class="settings-icon">🔑</span>
-                    <h2 class="settings-title">Konfiguracja MailPilot</h2>
-                    <p class="settings-subtitle">Podaj swój klucz API Google Gemini, aby rozpocząć</p>
+                    <span class="settings-icon">🔒</span>
+                    <h2 class="settings-title">Brak licencji</h2>
+                    <p class="settings-subtitle">Dostęp wymaga aktywnej subskrypcji.</p>
                 </div>
                 <div class="settings-form">
-                    <label class="input-label" for="input-api-key">Klucz API Gemini</label>
-                    <div class="input-group">
-                        <input id="input-api-key" type="password" class="input-field"
-                               placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
-                        <button id="btn-toggle-key" class="btn-icon-only" title="Pokaż/ukryj klucz">👁️</button>
-                    </div>
                     <p class="input-hint">
-                        Pobierz klucz z <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>.
-                        Klucz jest zapisywany tylko lokalnie w Twojej przeglądarce.
+                        Konto: <strong id="current-user-email">...</strong><br><br>
+                        Jeśli Twoja firma używa MailPilot, upewnij się, że Twój administrator przypisał licencję. W przeciwnym razie możesz wykupić prywatny pakiet.
                     </p>
-                    <button id="btn-save-key" class="btn btn-primary btn-full">
-                        <span class="btn-icon">💾</span> Zapisz i rozpocznij
-                    </button>
+                    <a href="https://autome.github.io/mailpilot/checkout" target="_blank" rel="noopener" class="btn btn-primary btn-full">
+                        <span class="btn-icon">💳</span> Odblokuj dostęp (5$/msc)
+                    </a>
                 </div>
             </div>
         </div>
@@ -86,6 +80,10 @@
                         <span id="priority-label"></span>
                     </div>
                 </div>
+                <div class="tone-badge hidden" id="tone-badge">
+                    <span id="tone-icon" class="tone-emoji">🎭</span>
+                    <span id="tone-label"></span>
+                </div>
                 <p class="summary-text" id="summary-text"></p>
                 <div id="urgency-banner" class="urgency-banner hidden">
                     <span class="urgency-icon">🔥</span>
@@ -103,11 +101,32 @@
                 <span class="spam-badge">Filtruj</span>
             </div>
 
+            <!-- Red Flags Banner -->
+            <div id="redflags-banner" class="card card-danger hidden">
+                <span class="danger-icon">🚩</span>
+                <div class="danger-content">
+                    <span class="danger-label">Wykryto ryzyko:</span>
+                    <ul id="redflags-list" class="danger-list"></ul>
+                </div>
+            </div>
+
+            <!-- Intent Translation Card -->
+            <div id="card-intent" class="card card-info hidden">
+                <div class="card-title">
+                    <span class="card-title-icon">🔍</span>
+                    Co nadawca miał na myśli?
+                </div>
+                <p id="intent-text" class="intent-text"></p>
+            </div>
+
             <!-- Draft Reply Card -->
             <div id="card-draft" class="card card-draft hidden">
-                <div class="card-title">
-                    <span class="card-title-icon">✍️</span>
-                    Szkic odpowiedzi
+                <div class="card-title draft-title-row">
+                    <div>
+                        <span class="card-title-icon">✍️</span>
+                        Szkic odpowiedzi
+                    </div>
+                    <select id="draft-selector" class="draft-selector"></select>
                 </div>
                 <textarea id="draft-text" class="draft-textarea" rows="5" spellcheck="true"></textarea>
                 <div class="card-actions">
@@ -134,6 +153,14 @@
                 <div id="extracted-tasks" class="extracted-section hidden">
                     <div class="extracted-label">✅ Zadania</div>
                     <ul id="tasks-list" class="extracted-list"></ul>
+                </div>
+                <div id="extracted-contacts" class="extracted-section hidden">
+                    <div class="extracted-label">📇 Kontakty</div>
+                    <ul id="contacts-list" class="extracted-list"></ul>
+                </div>
+                <div id="extracted-followup" class="extracted-section hidden">
+                    <div class="extracted-label">⏰ Follow-up</div>
+                    <p id="followup-text" class="extracted-text"></p>
                 </div>
             </div>
 

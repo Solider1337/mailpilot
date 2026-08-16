@@ -5,12 +5,7 @@
  * and renders AI analysis results. Zero server dependencies.
  */
 
-// ──────────────────────────────────────
-// Configuration
-// ──────────────────────────────────────
-
-const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
-const GEMINI_MODEL = 'gemini-3.5-flash-lite';
+const BACKEND_URL = 'https://backend-beta-one-53.vercel.app/api/analyze';
 
 const PRIORITY_LABELS = {
   1: 'Niski',
@@ -19,116 +14,6 @@ const PRIORITY_LABELS = {
   4: 'Wysoki',
   5: 'Krytyczny',
 };
-
-const SYSTEM_PROMPT = `You are MailPilot, an expert AI email assistant. Your job is to analyze incoming emails and provide actionable intelligence.
-
-RULES:
-- Respond in the SAME LANGUAGE as the email (if email is in Polish, all your outputs should be in Polish, etc.)
-- For draft replies: match the formality level of the original email. If it's casual, be casual. If it's formal, be formal.
-- For draft replies: keep them concise and professional. Do NOT make up information you don't have.
-- For priority scoring:
-  1 = FYI, no action needed (notifications, confirmations)
-  2 = Normal correspondence, can wait
-  3 = Important, should handle today
-  4 = High priority, needs quick response (deadline approaching, client request)
-  5 = Critical/urgent (overdue payment, emergency, escalation)
-- Be accurate with date extraction. Convert relative dates to absolute when possible.
-- If the email doesn't require a reply (newsletter, notification, spam), leave draft_reply empty.
-- For spam/marketing detection: be smart - a promotional email from a vendor you work with is "marketing", random unsolicited stuff is "spam".`;
-
-// Gemini REST API response schema
-const ANALYSIS_SCHEMA = {
-  type: 'OBJECT',
-  properties: {
-    category: {
-      type: 'STRING',
-      description: 'Email category: Work, Finance, Personal, Support, Newsletter, Social, Shopping, Travel, or custom',
-    },
-    category_icon: {
-      type: 'STRING',
-      description: 'Single emoji icon for the category',
-    },
-    priority: {
-      type: 'INTEGER',
-      description: 'Priority 1-5',
-    },
-    urgency_reason: {
-      type: 'STRING',
-      description: 'Why urgent (if priority >= 4), empty otherwise',
-    },
-    summary: {
-      type: 'STRING',
-      description: '1-2 sentence summary',
-    },
-    draft_reply: {
-      type: 'STRING',
-      description: 'Reply draft in email language, empty if no reply needed',
-    },
-    is_spam_or_marketing: {
-      type: 'BOOLEAN',
-      description: 'True if spam/marketing',
-    },
-    spam_category: {
-      type: 'STRING',
-      description: 'spam/marketing/newsletter/promotional or empty',
-    },
-    extracted_dates: {
-      type: 'ARRAY',
-      items: {
-        type: 'OBJECT',
-        properties: {
-          date: { type: 'STRING', description: 'Date in YYYY-MM-DD or as mentioned' },
-          context: { type: 'STRING', description: 'What this date refers to' },
-        },
-        required: ['date', 'context'],
-      },
-    },
-    extracted_amounts: {
-      type: 'ARRAY',
-      items: {
-        type: 'OBJECT',
-        properties: {
-          value: { type: 'STRING', description: 'Numeric value' },
-          currency: { type: 'STRING', description: 'Currency code' },
-          context: { type: 'STRING', description: 'What this amount refers to' },
-        },
-        required: ['value', 'currency', 'context'],
-      },
-    },
-    extracted_tasks: {
-      type: 'ARRAY',
-      items: {
-        type: 'OBJECT',
-        properties: {
-          task: { type: 'STRING', description: 'Task description' },
-          deadline: { type: 'STRING', description: 'Deadline if mentioned, empty otherwise' },
-        },
-        required: ['task', 'deadline'],
-      },
-    },
-  },
-  required: [
-    'category', 'category_icon', 'priority', 'urgency_reason',
-    'summary', 'draft_reply', 'is_spam_or_marketing', 'spam_category',
-    'extracted_dates', 'extracted_amounts', 'extracted_tasks',
-  ],
-};
-
-// ──────────────────────────────────────
-// API Key Management (localStorage)
-// ──────────────────────────────────────
-
-function getApiKey() {
-  return localStorage.getItem('mailpilot_api_key') || '';
-}
-
-function setApiKey(key) {
-  localStorage.setItem('mailpilot_api_key', key.trim());
-}
-
-function hasApiKey() {
-  return getApiKey().length > 10;
-}
 
 // ──────────────────────────────────────
 // State management
@@ -145,96 +30,21 @@ function showState(stateId) {
 // ──────────────────────────────────────
 
 let isOutlookContext = false;
+let userEmail = 'demo@example.com';
 
 if (typeof Office !== 'undefined') {
   Office.onReady((info) => {
     if (info.host === Office.HostType.Outlook) {
       isOutlookContext = true;
-      initSettingsUI();
-      if (hasApiKey()) {
-        analyzeCurrentEmail();
-      } else {
-        showState('settings-state');
-      }
-    } else {
-      initSettingsUI();
-      if (hasApiKey()) {
-        initDemoMode();
-      } else {
-        showState('settings-state');
-      }
-    }
-  });
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    initSettingsUI();
-    if (hasApiKey()) {
-      initDemoMode();
-    } else {
-      showState('settings-state');
-    }
-  });
-}
-
-// ──────────────────────────────────────
-// Settings UI
-// ──────────────────────────────────────
-
-function initSettingsUI() {
-  // Save key button
-  const btnSave = document.getElementById('btn-save-key');
-  const inputKey = document.getElementById('input-api-key');
-
-  // Pre-fill if key exists
-  if (hasApiKey()) {
-    inputKey.value = getApiKey();
-  }
-
-  btnSave.addEventListener('click', () => {
-    const key = inputKey.value.trim();
-    if (!key || key.length < 10) {
-      showToast('Podaj poprawny klucz API', 'error');
-      return;
-    }
-    setApiKey(key);
-    showToast('Klucz API zapisany!', 'success');
-
-    // Start analysis or demo
-    if (isOutlookContext) {
+      userEmail = Office.context.mailbox.userProfile.emailAddress;
       analyzeCurrentEmail();
     } else {
       initDemoMode();
     }
   });
-
-  // Toggle key visibility
-  const btnToggle = document.getElementById('btn-toggle-key');
-  btnToggle.addEventListener('click', () => {
-    inputKey.type = inputKey.type === 'password' ? 'text' : 'password';
-    btnToggle.textContent = inputKey.type === 'password' ? '👁️' : '🙈';
-  });
-
-  // Settings gear toggle
-  const btnSettings = document.getElementById('btn-settings-toggle');
-  btnSettings.addEventListener('click', () => {
-    const settingsState = document.getElementById('settings-state');
-    if (settingsState.classList.contains('hidden')) {
-      // Fill current key
-      inputKey.value = getApiKey();
-      showState('settings-state');
-    } else {
-      // Go back
-      if (isOutlookContext) {
-        analyzeCurrentEmail();
-      } else {
-        initDemoMode();
-      }
-    }
-  });
-
-  // Enter key to save
-  inputKey.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') btnSave.click();
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    initDemoMode();
   });
 }
 
@@ -269,63 +79,43 @@ async function readCurrentEmail() {
 }
 
 // ──────────────────────────────────────
-// Gemini API – Direct REST call (NO BACKEND!)
+// Backend API (Vercel/Local)
 // ──────────────────────────────────────
 
-async function callGeminiAPI(emailData) {
-  const apiKey = getApiKey();
-  if (!apiKey) throw new Error('Brak klucza API. Przejdź do ustawień.');
-
+async function callBackendAPI(emailData) {
   const emailText = formatEmailForPrompt(emailData);
 
-  const response = await fetch(
-    `${GEMINI_API_BASE}/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: SYSTEM_PROMPT }],
-        },
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: emailText }],
-          },
-        ],
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 2048,
-          responseMimeType: 'application/json',
-          responseSchema: ANALYSIS_SCHEMA,
-        },
-      }),
-    }
-  );
+  const response = await fetch(BACKEND_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      emailText: emailText,
+      userEmail: userEmail
+    })
+  });
 
   const data = await response.json();
 
-  // Handle API errors
-  if (data.error) {
-    const msg = data.error.message || 'Nieznany błąd API';
-    if (msg.includes('API key')) {
-      throw new Error('Nieprawidłowy klucz API. Sprawdź ustawienia.');
+  if (!response.ok) {
+    if (response.status === 403) {
+      document.getElementById('current-user-email').textContent = userEmail;
+      showState('license-state');
+      throw new Error('LICENSE_ERROR');
     }
-    throw new Error(msg);
+    throw new Error(data.detail || 'Wystąpił błąd połączenia z serwerem');
   }
 
-  // Extract JSON from response
-  if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-    throw new Error('Gemini nie zwrócił odpowiedzi. Spróbuj ponownie.');
+  // Ustaw odznakę organizacji z backendu
+  if (data._auth_info && data._auth_info.organization) {
+    const badge = document.getElementById('org-badge');
+    badge.textContent = `Organizacja: ${data._auth_info.organization}`;
+    badge.classList.remove('hidden');
   }
 
-  const resultText = data.candidates[0].content.parts[0].text;
-  const result = JSON.parse(resultText);
+  // Wymuszony zakres priority
+  data.priority = Math.max(1, Math.min(5, data.priority || 2));
 
-  // Clamp priority
-  result.priority = Math.max(1, Math.min(5, result.priority || 2));
-
-  return result;
+  return data;
 }
 
 function formatEmailForPrompt(email) {
@@ -334,13 +124,10 @@ function formatEmailForPrompt(email) {
     `From: ${email.sender || 'unknown'}`,
     `To: ${(email.recipients || []).join(', ') || 'unknown'}`,
   ];
-
   if (email.attachmentNames && email.attachmentNames.length > 0) {
     parts.push(`Attachments: ${email.attachmentNames.join(', ')}`);
   }
-
   parts.push(`\n--- Email Body ---\n${email.body || '(empty body)'}\n--- End of Email ---`);
-
   return parts.join('\n');
 }
 
@@ -355,11 +142,11 @@ async function analyzeCurrentEmail() {
   showState('loading-state');
   try {
     currentEmailData = await readCurrentEmail();
-    currentAnalysis = await callGeminiAPI(currentEmailData);
+    currentAnalysis = await callBackendAPI(currentEmailData);
     renderResults(currentAnalysis);
     showState('results-state');
   } catch (err) {
-    showError(err.message);
+    if (err.message !== 'LICENSE_ERROR') showError(err.message);
   }
 }
 
@@ -367,11 +154,11 @@ async function analyzeEmailData(emailData) {
   showState('loading-state');
   try {
     currentEmailData = emailData;
-    currentAnalysis = await callGeminiAPI(emailData);
+    currentAnalysis = await callBackendAPI(emailData);
     renderResults(currentAnalysis);
     showState('results-state');
   } catch (err) {
-    showError(err.message);
+    if (err.message !== 'LICENSE_ERROR') showError(err.message);
   }
 }
 
@@ -390,6 +177,15 @@ function renderResults(data) {
   priorityBadge.className = `priority-badge priority-${priority}`;
   document.getElementById('priority-label').textContent =
     PRIORITY_LABELS[priority] || 'Normalny';
+
+  // Tone
+  const toneBadge = document.getElementById('tone-badge');
+  if (data.tone) {
+    document.getElementById('tone-label').textContent = data.tone;
+    toneBadge.classList.remove('hidden');
+  } else {
+    toneBadge.classList.add('hidden');
+  }
 
   // Summary
   document.getElementById('summary-text').textContent = data.summary || '';
@@ -412,10 +208,59 @@ function renderResults(data) {
     spamBanner.classList.add('hidden');
   }
 
+  // Red Flags
+  const redflagsBanner = document.getElementById('redflags-banner');
+  const redflagsList = document.getElementById('redflags-list');
+  redflagsList.innerHTML = '';
+  if (data.red_flags && data.red_flags.length > 0) {
+    data.red_flags.forEach((flag) => {
+      const li = document.createElement('li');
+      li.textContent = flag;
+      redflagsList.appendChild(li);
+    });
+    redflagsBanner.classList.remove('hidden');
+  } else {
+    redflagsBanner.classList.add('hidden');
+  }
+
+  // Intent Translation
+  const intentCard = document.getElementById('card-intent');
+  if (data.intent_translation) {
+    document.getElementById('intent-text').textContent = data.intent_translation;
+    intentCard.classList.remove('hidden');
+  } else {
+    intentCard.classList.add('hidden');
+  }
+
   // Draft reply
   const draftCard = document.getElementById('card-draft');
-  if (data.draft_reply) {
-    document.getElementById('draft-text').value = data.draft_reply;
+  const draftSelector = document.getElementById('draft-selector');
+  const draftTextarea = document.getElementById('draft-text');
+  
+  draftSelector.innerHTML = '';
+  if (data.draft_replies && data.draft_replies.length > 0) {
+    data.draft_replies.forEach((draft, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = draft.type;
+      draftSelector.appendChild(option);
+    });
+    
+    // Ustawienie początkowego szkicu
+    draftTextarea.value = data.draft_replies[0].text;
+    
+    // Event listener na zmianę wyboru
+    draftSelector.onchange = (e) => {
+      const idx = e.target.value;
+      draftTextarea.value = data.draft_replies[idx].text;
+    };
+    
+    draftCard.classList.remove('hidden');
+    draftSelector.classList.remove('hidden');
+  } else if (data.draft_reply) {
+    // Fallback do starej struktury gdyby była
+    draftTextarea.value = data.draft_reply;
+    draftSelector.classList.add('hidden');
     draftCard.classList.remove('hidden');
   } else {
     draftCard.classList.add('hidden');
@@ -486,6 +331,38 @@ function renderExtractedData(data) {
     hasAny = true;
   } else {
     tasksSection.classList.add('hidden');
+  }
+
+  // Contacts
+  const contactsSection = document.getElementById('extracted-contacts');
+  const contactsList = document.getElementById('contacts-list');
+  if (contactsList) {
+    contactsList.innerHTML = '';
+    if (data.extracted_contacts && data.extracted_contacts.length > 0) {
+      data.extracted_contacts.forEach((c) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="data-value">${esc(c.name)}</span>
+                         <span class="data-context">— ${esc(c.info)}</span>`;
+        contactsList.appendChild(li);
+      });
+      contactsSection.classList.remove('hidden');
+      hasAny = true;
+    } else {
+      contactsSection.classList.add('hidden');
+    }
+  }
+
+  // Follow-up
+  const followupSection = document.getElementById('extracted-followup');
+  const followupText = document.getElementById('followup-text');
+  if (followupSection && followupText) {
+    if (data.follow_up_suggestion) {
+      followupText.textContent = data.follow_up_suggestion;
+      followupSection.classList.remove('hidden');
+      hasAny = true;
+    } else {
+      followupSection.classList.add('hidden');
+    }
   }
 
   return hasAny;
@@ -614,9 +491,7 @@ function showError(message) {
   showState('error-state');
 
   document.getElementById('btn-retry').onclick = () => {
-    if (!hasApiKey()) {
-      showState('settings-state');
-    } else if (isOutlookContext) {
+    if (isOutlookContext) {
       analyzeCurrentEmail();
     } else {
       showState('demo-state');
