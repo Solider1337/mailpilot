@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-Dyqzd7SW.js"></script>
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-XZjHL5AO.js"></script>
   <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-C_7w0dlQ.css">
 </head>
 <body>
@@ -101,26 +101,41 @@
             <div class="section-title mt-2">✨ Mail Maestro Mode</div>
             <div id="card-draft" class="card card-draft">
                 <div class="draft-tabs" style="display: flex; gap: 8px; margin-bottom: 12px;">
-                    <button id="tab-generate" class="btn btn-primary" style="flex:1; padding: 6px;">Odpisz</button>
-                    <button id="tab-improve" class="btn btn-secondary" style="flex:1; padding: 6px;">Popraw tekst</button>
+                    <button id="tab-preset" class="btn btn-primary" style="flex:1; padding: 6px;">Gotowa odpowiedź</button>
+                    <button id="tab-custom" class="btn btn-secondary" style="flex:1; padding: 6px;">Własna odpowiedź</button>
                 </div>
                 
-                <div id="draft-input-area">
-                    <label id="draft-prompt-label" class="draft-label">Krótka instrukcja dla AI:</label>
-                    <textarea id="draft-prompt" class="draft-textarea" rows="2" placeholder="np. Zgódź się i zaproponuj czwartek..."></textarea>
-                    <button id="btn-generate-draft" class="btn btn-primary btn-full mt-1">
-                        <span class="btn-icon" id="draft-btn-icon">✨</span> <span id="draft-btn-text">Generuj odpowiedź</span>
-                    </button>
-                </div>
-
-                <div id="draft-result-area" class="hidden mt-2" style="border-top: 1px solid var(--border-color); padding-top: 10px;">
-                    <label class="draft-label">Wynik:</label>
-                    <textarea id="draft-text" class="draft-textarea" rows="4" spellcheck="true"></textarea>
+                <!-- Left Tab: Preset -->
+                <div id="draft-preset-area">
+                    <label class="draft-label">Wybierz styl odpowiedzi:</label>
+                    <select id="draft-selector" class="draft-selector mb-1"></select>
+                    <textarea id="draft-preset-text" class="draft-textarea" rows="4" spellcheck="true"></textarea>
                     
                     <div class="draft-actions mt-1">
-                        <button id="btn-copy-draft" class="btn btn-secondary btn-full">
+                        <button id="btn-copy-preset" class="btn btn-secondary btn-full">
                             <span class="btn-icon">📋</span> Kopiuj
                         </button>
+                    </div>
+                </div>
+
+                <!-- Right Tab: Custom -->
+                <div id="draft-custom-area" class="hidden">
+                    <label class="draft-label">Instrukcja dla AI:</label>
+                    <textarea id="draft-prompt" class="draft-textarea mb-1" rows="4" placeholder="np. Zgódź się i zaproponuj czwartek..."></textarea>
+                    
+                    <button id="btn-generate-draft" class="btn btn-primary btn-full mt-1">
+                        <span class="btn-icon">✨</span> Generuj odpowiedź
+                    </button>
+                    
+                    <div id="draft-custom-result-area" class="hidden mt-2" style="border-top: 1px solid var(--border-color); padding-top: 10px;">
+                        <label class="draft-label">Wynik:</label>
+                        <textarea id="draft-custom-text" class="draft-textarea" rows="4" spellcheck="true"></textarea>
+                        
+                        <div class="draft-actions mt-1">
+                            <button id="btn-copy-custom" class="btn btn-secondary btn-full">
+                                <span class="btn-icon">📋</span> Kopiuj
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
