@@ -223,42 +223,51 @@ function renderResults(data) {
     redflagsBanner.classList.add('hidden');
   }
 
-  // Intent Translation
-  const intentCard = document.getElementById('card-intent');
-  if (data.intent_translation) {
-    document.getElementById('intent-text').textContent = data.intent_translation;
-    intentCard.classList.remove('hidden');
-  } else {
-    intentCard.classList.add('hidden');
-  }
-
   // Draft reply
   const draftCard = document.getElementById('card-draft');
   const draftSelector = document.getElementById('draft-selector');
   const draftTextarea = document.getElementById('draft-text');
   
   draftSelector.innerHTML = '';
-  if (data.draft_replies && data.draft_replies.length > 0) {
-    data.draft_replies.forEach((draft, index) => {
+  if (data.draft_types && data.draft_types.length > 0) {
+    data.draft_types.forEach((type, index) => {
       const option = document.createElement('option');
-      option.value = index;
-      option.textContent = draft.type;
+      option.value = type;
+      option.textContent = type;
       draftSelector.appendChild(option);
     });
     
-    // Ustawienie początkowego szkicu
-    draftTextarea.value = data.draft_replies[0].text;
+    // Ustawienie początkowego szkicu (z pierwszego API)
+    draftTextarea.value = data.draft_reply || '';
     
     // Event listener na zmianę wyboru
-    draftSelector.onchange = (e) => {
-      const idx = e.target.value;
-      draftTextarea.value = data.draft_replies[idx].text;
+    draftSelector.onchange = async (e) => {
+      const selectedType = e.target.value;
+      draftTextarea.value = "Generuję nową odpowiedź...";
+      draftTextarea.disabled = true;
+      try {
+        const response = await fetch(BACKEND_URL.replace('/api/analyze', '/api/draft'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            emailText: formatEmailForPrompt(currentEmailData),
+            userEmail: userEmail,
+            draftType: selectedType
+          })
+        });
+        const resData = await response.json();
+        if (resData.draft) {
+          draftTextarea.value = resData.draft;
+        }
+      } catch (err) {
+        draftTextarea.value = "Wystąpił błąd podczas generowania.";
+      }
+      draftTextarea.disabled = false;
     };
     
     draftCard.classList.remove('hidden');
     draftSelector.classList.remove('hidden');
   } else if (data.draft_reply) {
-    // Fallback do starej struktury gdyby była
     draftTextarea.value = data.draft_reply;
     draftSelector.classList.add('hidden');
     draftCard.classList.remove('hidden');
