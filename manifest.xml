@@ -28,7 +28,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html"/>
+        <SourceLocation DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html?v=2"/>
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -78,7 +78,7 @@
         <bt:Image id="icon80" DefaultValue="https://Solider1337.github.io/mailpilot/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="taskPaneUrl" DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html"/>
+        <bt:Url id="taskPaneUrl" DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html?v=2"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="MailPilot AI"/>
