@@ -3,44 +3,62 @@
    ============================================= */
 
 :root {
-  /* Color Palette */
-  --bg-primary: #0c0c1d;
-  --bg-secondary: #12122b;
-  --bg-card: rgba(22, 22, 50, 0.7);
-  --bg-card-hover: rgba(30, 30, 65, 0.8);
-  --bg-glass: rgba(255, 255, 255, 0.04);
+  /* ======== Corporate Slate Light Theme (Default) ======== */
+  --bg-primary: #F8FAFC; /* Slate 50 */
+  --bg-secondary: #F1F5F9; /* Slate 100 */
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --bg-glass: rgba(255, 255, 255, 0.8);
 
-  --text-primary: #e8e8f0;
-  --text-secondary: #9d9db8;
-  --text-muted: #6b6b88;
+  --text-primary: #0F172A; /* Slate 900 */
+  --text-secondary: #475569; /* Slate 600 */
+  --text-muted: #94A3B8; /* Slate 400 */
 
-  --accent-start: #7c5cfc;
-  --accent-end: #38b6ff;
+  --accent-start: #4F46E5; /* Indigo 600 */
+  --accent-end: #3B82F6; /* Blue 500 */
   --accent-gradient: linear-gradient(135deg, var(--accent-start), var(--accent-end));
 
-  --priority-1: #4a5568;
-  --priority-2: #38b2ac;
-  --priority-3: #ecc94b;
-  --priority-4: #ed8936;
-  --priority-5: #fc5185;
+  --priority-1: #64748B; /* Slate 500 */
+  --priority-2: #0284C7; /* Sky 600 */
+  --priority-3: #D97706; /* Amber 600 */
+  --priority-4: #EA580C; /* Orange 600 */
+  --priority-5: #DC2626; /* Red 600 */
 
-  --success: #48bb78;
-  --warning: #ed8936;
-  --danger: #fc5185;
-  --info: #38b6ff;
+  --success: #16A34A; /* Green 600 */
+  --warning: #D97706;
+  --danger: #DC2626;
+  --info: #0284C7;
 
-  --border: rgba(255, 255, 255, 0.06);
-  --border-accent: rgba(124, 92, 252, 0.3);
+  --border: #E2E8F0; /* Slate 200 */
+  --border-accent: rgba(79, 70, 229, 0.3);
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border);
-  --shadow-glow: 0 0 20px rgba(124, 92, 252, 0.15);
+  --shadow-card: 0 2px 8px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-glow: none;
 
   --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* ======== Corporate Slate Dark Theme ======== */
+    --bg-primary: #0F172A; /* Slate 900 */
+    --bg-secondary: #1E293B; /* Slate 800 */
+    --bg-card: #1E293B;
+    --bg-card-hover: #334155; /* Slate 700 */
+    --bg-glass: rgba(30, 41, 59, 0.8);
+
+    --text-primary: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --text-muted: #64748B;
+
+    --border: #334155;
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border);
+  }
 }
 
 /* Reset & Base */
@@ -61,27 +79,6 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
   min-height: 100vh;
-}
-
-/* Subtle animated gradient background */
-body::before {
-  content: '';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(ellipse at 20% 50%, rgba(124, 92, 252, 0.08) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 20%, rgba(56, 182, 255, 0.06) 0%, transparent 50%),
-              radial-gradient(ellipse at 50% 80%, rgba(252, 81, 133, 0.04) 0%, transparent 50%);
-  animation: bgShift 20s ease-in-out infinite alternate;
-  z-index: -1;
-  pointer-events: none;
-}
-
-@keyframes bgShift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  100% { transform: translate(-5%, -3%) rotate(3deg); }
 }
 
 #app {
@@ -322,46 +319,36 @@ body::before {
 }
 
 .priority-badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
 
 .priority-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
 }
 
-/* Priority level colors */
-.priority-1 { background: rgba(74, 85, 104, 0.2); color: var(--priority-1); border: 1px solid rgba(74, 85, 104, 0.3); }
+.priority-1 { background: transparent; color: var(--priority-1); border-color: var(--border); }
 .priority-1 .priority-dot { background: var(--priority-1); }
 
-.priority-2 { background: rgba(56, 178, 172, 0.15); color: var(--priority-2); border: 1px solid rgba(56, 178, 172, 0.3); }
+.priority-2 { background: rgba(2, 132, 199, 0.1); color: var(--priority-2); border-color: rgba(2, 132, 199, 0.2); }
 .priority-2 .priority-dot { background: var(--priority-2); }
 
-.priority-3 { background: rgba(236, 201, 75, 0.15); color: var(--priority-3); border: 1px solid rgba(236, 201, 75, 0.3); }
+.priority-3 { background: rgba(217, 119, 6, 0.1); color: var(--priority-3); border-color: rgba(217, 119, 6, 0.2); }
 .priority-3 .priority-dot { background: var(--priority-3); }
 
-.priority-4 { background: rgba(237, 137, 54, 0.15); color: var(--priority-4); border: 1px solid rgba(237, 137, 54, 0.3); }
-.priority-4 .priority-dot { background: var(--priority-4); animation: blink 1.5s ease-in-out infinite; }
+.priority-4 { background: rgba(234, 88, 12, 0.1); color: var(--priority-4); border-color: rgba(234, 88, 12, 0.2); }
+.priority-4 .priority-dot { background: var(--priority-4); }
 
-.priority-5 { background: rgba(252, 81, 133, 0.2); color: var(--priority-5); border: 1px solid rgba(252, 81, 133, 0.4); }
-.priority-5 .priority-dot { background: var(--priority-5); animation: blink 0.8s ease-in-out infinite; box-shadow: 0 0 8px var(--priority-5); }
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
+.priority-5 { background: rgba(220, 38, 38, 0.1); color: var(--priority-5); border-color: rgba(220, 38, 38, 0.2); }
+.priority-5 .priority-dot { background: var(--priority-5); }
 
 .summary-text {
   font-size: 0.9rem;
@@ -447,8 +434,8 @@ body::before {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  background: rgba(252, 81, 133, 0.08);
-  border-color: rgba(252, 81, 133, 0.2);
+  background: rgba(220, 38, 38, 0.05);
+  border-color: rgba(220, 38, 38, 0.2);
 }
 
 .danger-icon {
@@ -482,8 +469,8 @@ body::before {
 
 /* ======== Intent Card ======== */
 .card-info {
-  background: rgba(43, 219, 219, 0.05);
-  border-color: rgba(43, 219, 219, 0.2);
+  background: rgba(2, 132, 199, 0.05);
+  border-color: rgba(2, 132, 199, 0.2);
 }
 
 .intent-text {
@@ -501,7 +488,7 @@ body::before {
 }
 
 .draft-selector {
-  background: var(--bg-glass);
+  background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
@@ -511,6 +498,7 @@ body::before {
   font-family: var(--font);
   cursor: pointer;
   max-width: 150px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .draft-selector:focus {
@@ -520,7 +508,7 @@ body::before {
 .draft-textarea {
   width: 100%;
   padding: 10px 12px;
-  background: var(--bg-glass);
+  background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
@@ -530,11 +518,12 @@ body::before {
   resize: vertical;
   transition: var(--transition);
   outline: none;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
 }
 
 .draft-textarea:focus {
   border-color: var(--accent-start);
-  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.15);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
 }
 
 .card-actions {
