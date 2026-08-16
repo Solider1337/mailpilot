@@ -167,17 +167,6 @@ async function analyzeEmailData(emailData) {
 // ──────────────────────────────────────
 
 function renderResults(data) {
-  // Tone
-  const toneBadge = document.getElementById('tone-badge');
-  if (toneBadge) {
-    if (data.tone) {
-      document.getElementById('tone-label').textContent = data.tone;
-      toneBadge.classList.remove('hidden');
-    } else {
-      toneBadge.classList.add('hidden');
-    }
-  }
-
   // Summary
   document.getElementById('summary-text').textContent = data.summary || '';
 

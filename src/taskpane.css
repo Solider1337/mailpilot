@@ -549,20 +549,10 @@ body {
 
 .summary-list li {
   position: relative;
-  padding-left: 14px;
   font-size: 0.85rem;
   color: var(--text-primary);
   margin-bottom: 6px;
   line-height: 1.5;
-}
-
-.summary-list li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--text-primary);
-  font-weight: bold;
 }
 
 /* Tasks Grid */
