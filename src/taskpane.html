@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-BvInW54c.js"></script>
-  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-DOEZ_HSL.css">
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-DUNU-Fog.js"></script>
+  <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-C_7w0dlQ.css">
 </head>
 <body>
     <div id="app">
@@ -91,13 +91,25 @@
             <div class="card card-summary">
                 <div class="card-subtitle">Key Takeaways</div>
                 <div class="summary-content">
-                    <div class="tone-badge hidden" id="tone-badge">
-                        <span id="tone-icon" class="tone-emoji">🎭</span>
-                        <span id="tone-label"></span>
-                    </div>
                     <ul id="summary-list" class="summary-list">
                         <li id="summary-text"></li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- Draft & Generate -->
+            <div class="section-title mt-2">Draft & Generate</div>
+            <div id="card-draft" class="card card-draft">
+                <div class="draft-header">
+                    <label class="draft-label">Draft Style</label>
+                    <select id="draft-selector" class="draft-selector"></select>
+                </div>
+                <textarea id="draft-text" class="draft-textarea" rows="4" spellcheck="true" placeholder="Describe the response..."></textarea>
+                
+                <div class="draft-actions">
+                    <button id="btn-copy-draft" class="btn btn-secondary">
+                        <span class="btn-icon">📋</span> Copy
+                    </button>
                 </div>
             </div>
 
@@ -132,25 +144,6 @@
                     <div id="amounts-list" class="entities-list">
                         <!-- Amounts injected here -->
                     </div>
-                </div>
-            </div>
-
-            <!-- Draft & Generate -->
-            <div class="section-title mt-2">Draft & Generate</div>
-            <div id="card-draft" class="card card-draft">
-                <div class="draft-header">
-                    <label class="draft-label">Draft Style</label>
-                    <select id="draft-selector" class="draft-selector"></select>
-                </div>
-                <textarea id="draft-text" class="draft-textarea" rows="4" spellcheck="true" placeholder="Describe the response..."></textarea>
-                
-                <div class="draft-actions">
-                    <button id="btn-copy-draft" class="btn btn-secondary">
-                        <span class="btn-icon">📋</span> Copy
-                    </button>
-                    <!-- <button id="btn-generate" class="btn btn-primary-action">
-                        <span class="btn-icon">✨</span> Generate Draft
-                    </button> -->
                 </div>
             </div>
 
