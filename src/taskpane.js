@@ -39,15 +39,34 @@ if (typeof Office !== 'undefined') {
       userEmail = Office.context.mailbox.userProfile.emailAddress;
       
       // Nasłuchuj zmiany zaznaczonego maila
-      Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, function() {
-        // Natychmiast pokaż ekran ładowania, żeby użytkownik wiedział, że coś się dzieje
-        showState('loading-state');
-        
-        // Zastosuj małe opóźnienie, aby Outlook zdążył podmienić 'Office.context.mailbox.item' w pamięci
-        setTimeout(() => {
-          analyzeCurrentEmail();
-        }, 500);
-      });
+      Office.context.mailbox.addHandlerAsync(
+        Office.EventType.ItemChanged,
+        function() {
+          showState('loading-state');
+          setTimeout(() => {
+            analyzeCurrentEmail();
+          }, 500);
+        },
+        function(asyncResult) {
+          if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+            showError("Błąd przypinania: " + asyncResult.error.message);
+          }
+        }
+      );
+
+      // Zabezpieczenie (Fallback): Wymuszone sprawdzanie zmiany maila co 1 sekundę
+      let lastItemId = Office.context.mailbox.item ? Office.context.mailbox.item.itemId : null;
+      setInterval(() => {
+        const currentItem = Office.context.mailbox.item;
+        if (currentItem && currentItem.itemId !== lastItemId) {
+          lastItemId = currentItem.itemId;
+          console.log("Wykryto zmianę maila przez polling!");
+          showState('loading-state');
+          setTimeout(() => {
+            analyzeCurrentEmail();
+          }, 500);
+        }
+      }, 1000);
 
       analyzeCurrentEmail();
     } else {
