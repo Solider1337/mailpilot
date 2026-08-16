@@ -225,57 +225,86 @@ function renderResults(data) {
     redflagsBanner.classList.add('hidden');
   }
 
-  // Draft reply
+  // Mail Maestro Draft & Improve
   const draftCard = document.getElementById('card-draft');
-  const draftSelector = document.getElementById('draft-selector');
+  const tabGenerate = document.getElementById('tab-generate');
+  const tabImprove = document.getElementById('tab-improve');
+  const draftPromptLabel = document.getElementById('draft-prompt-label');
+  const draftPrompt = document.getElementById('draft-prompt');
+  const btnGenerateDraft = document.getElementById('btn-generate-draft');
+  const draftBtnText = document.getElementById('draft-btn-text');
+  const draftBtnIcon = document.getElementById('draft-btn-icon');
+  const draftResultArea = document.getElementById('draft-result-area');
   const draftTextarea = document.getElementById('draft-text');
-  
-  draftSelector.innerHTML = '';
-  if (data.draft_types && data.draft_types.length > 0) {
-    data.draft_types.forEach((type, index) => {
-      const option = document.createElement('option');
-      option.value = type;
-      option.textContent = type;
-      draftSelector.appendChild(option);
-    });
+
+  let currentDraftMode = 'generate';
+
+  // Setup tabs
+  tabGenerate.onclick = () => {
+    currentDraftMode = 'generate';
+    tabGenerate.className = 'btn btn-primary';
+    tabImprove.className = 'btn btn-secondary';
+    draftPromptLabel.textContent = 'Krótka instrukcja dla AI:';
+    draftPrompt.placeholder = 'np. Zgódź się i zaproponuj czwartek...';
+    draftBtnText.textContent = 'Generuj odpowiedź';
+    draftBtnIcon.textContent = '✨';
+  };
+
+  tabImprove.onclick = () => {
+    currentDraftMode = 'improve';
+    tabGenerate.className = 'btn btn-secondary';
+    tabImprove.className = 'btn btn-primary';
+    draftPromptLabel.textContent = 'Twój brudnopis do poprawy:';
+    draftPrompt.placeholder = 'Wklej swój tekst tutaj...';
+    draftBtnText.textContent = 'Popraw tekst';
+    draftBtnIcon.textContent = '✍️';
+  };
+
+  // Generate action
+  btnGenerateDraft.onclick = async () => {
+    const promptValue = draftPrompt.value.trim();
+    if (!promptValue) {
+      showToast('Wpisz instrukcję lub tekst!', 'error');
+      return;
+    }
+
+    draftBtnText.textContent = 'Generowanie...';
+    btnGenerateDraft.disabled = true;
     
-    // Ustawienie początkowego szkicu (z pierwszego API)
-    draftTextarea.value = data.draft_reply || '';
-    
-    // Event listener na zmianę wyboru
-    draftSelector.onchange = async (e) => {
-      const selectedType = e.target.value;
-      draftTextarea.value = "Generuję nową odpowiedź...";
-      draftTextarea.disabled = true;
-      try {
-        const response = await fetch(BACKEND_URL.replace('/api/analyze', '/api/draft'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            emailText: formatEmailForPrompt(currentEmailData),
-            userEmail: userEmail,
-            draftType: selectedType
-          })
-        });
-        const resData = await response.json();
-        if (resData.draft) {
-          draftTextarea.value = resData.draft;
-        }
-      } catch (err) {
-        draftTextarea.value = "Wystąpił błąd podczas generowania.";
+    try {
+      const response = await fetch(BACKEND_URL.replace('/api/analyze', '/api/draft'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          emailText: formatEmailForPrompt(currentEmailData),
+          userEmail: userEmail,
+          prompt: promptValue,
+          mode: currentDraftMode
+        })
+      });
+      const resData = await response.json();
+      
+      if (resData.draft) {
+        draftTextarea.value = resData.draft;
+        draftResultArea.classList.remove('hidden');
+      } else {
+        showToast('Błąd generowania', 'error');
       }
-      draftTextarea.disabled = false;
-    };
+    } catch (err) {
+      showToast('Wystąpił błąd komunikacji', 'error');
+    }
     
-    draftCard.classList.remove('hidden');
-    draftSelector.classList.remove('hidden');
-  } else if (data.draft_reply) {
-    draftTextarea.value = data.draft_reply;
-    draftSelector.classList.add('hidden');
-    draftCard.classList.remove('hidden');
-  } else {
-    draftCard.classList.add('hidden');
-  }
+    draftBtnText.textContent = currentDraftMode === 'generate' ? 'Generuj odpowiedź' : 'Popraw tekst';
+    btnGenerateDraft.disabled = false;
+  };
+
+  // Pokaż kartę drafów od razu po analizie
+  draftCard.classList.remove('hidden');
+  
+  // Wyczyść wyniki z poprzedniego maila
+  draftResultArea.classList.add('hidden');
+  draftTextarea.value = '';
+  draftPrompt.value = '';
 
   // Extracted data
   renderExtractedData(data);
