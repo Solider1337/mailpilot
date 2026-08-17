@@ -16,6 +16,82 @@ const PRIORITY_LABELS = {
 };
 
 // ──────────────────────────────────────
+// Settings, Theme & i18n
+// ──────────────────────────────────────
+
+const DICT = {
+  pl: {
+    settingsTitle: "Ustawienia",
+    languageLabel: "Język aplikacji:",
+    themeLabel: "Motyw:",
+    themeLight: "Jasny",
+    themeDark: "Ciemny",
+    planLabel: "Subskrypcja:",
+    managePlanBtn: "Zarządzaj"
+  },
+  en: {
+    settingsTitle: "Settings",
+    languageLabel: "App Language:",
+    themeLabel: "Theme:",
+    themeLight: "Light",
+    themeDark: "Dark",
+    planLabel: "Subscription:",
+    managePlanBtn: "Manage"
+  }
+};
+
+let currentLang = localStorage.getItem('mailpilot-lang') || navigator.language.split('-')[0];
+if (!DICT[currentLang]) currentLang = 'en';
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('mailpilot-lang', lang);
+  const dict = DICT[lang] || DICT.en;
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) {
+      el.textContent = dict[key];
+    }
+  });
+}
+
+function applyTheme(theme) {
+  localStorage.setItem('mailpilot-theme', theme);
+  if (theme === 'dark') {
+    document.body.classList.add('dark-theme');
+  } else {
+    document.body.classList.remove('dark-theme');
+  }
+}
+
+function initSettings() {
+  const btnSettings = document.getElementById('btn-settings');
+  const btnCloseSettings = document.getElementById('btn-close-settings');
+  const modal = document.getElementById('settings-modal');
+  const selLang = document.getElementById('settings-language');
+  const selTheme = document.getElementById('settings-theme');
+  
+  // Load saved prefs
+  applyLanguage(currentLang);
+  selLang.value = currentLang;
+  
+  const savedTheme = localStorage.getItem('mailpilot-theme') || 'light';
+  applyTheme(savedTheme);
+  selTheme.value = savedTheme;
+  
+  btnSettings.onclick = () => modal.classList.remove('hidden');
+  btnCloseSettings.onclick = () => modal.classList.add('hidden');
+  
+  selLang.onchange = (e) => applyLanguage(e.target.value);
+  selTheme.onchange = (e) => applyTheme(e.target.value);
+  
+  document.getElementById('btn-manage-plan').onclick = () => {
+    window.open('https://autome.github.io/mailpilot/checkout', '_blank');
+  };
+}
+
+// ──────────────────────────────────────
 // State management
 // ──────────────────────────────────────
 
@@ -68,15 +144,21 @@ if (typeof Office !== 'undefined') {
         }
       }, 1000);
 
+      initSettings();
       analyzeCurrentEmail();
     } else {
       initDemoMode();
     }
   });
 } else {
-  document.addEventListener('DOMContentLoaded', () => {
-    initDemoMode();
-  });
+  // Test fallback
+  window.onload = () => {
+    initSettings();
+    showState('loading-state');
+    setTimeout(() => {
+      analyzeEmailData(MOCK_EMAIL);
+    }, 1000);
+  };
 }
 
 // ──────────────────────────────────────
@@ -121,7 +203,8 @@ async function callBackendAPI(emailData) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       emailText: emailText,
-      userEmail: userEmail
+      userEmail: userEmail,
+      language: currentLang
     })
   });
 
@@ -136,11 +219,23 @@ async function callBackendAPI(emailData) {
     throw new Error(data.detail || 'Wystąpił błąd połączenia z serwerem');
   }
 
-  // Ustaw odznakę organizacji z backendu
-  if (data._auth_info && data._auth_info.organization) {
+  // Ustaw odznakę organizacji i status planu w Ustawieniach
+  if (data._auth_info) {
     const badge = document.getElementById('org-badge');
-    badge.textContent = `Organizacja: ${data._auth_info.organization}`;
-    badge.classList.remove('hidden');
+    const planInfo = document.getElementById('plan-info');
+    const btnManagePlan = document.getElementById('btn-manage-plan');
+    
+    if (data._auth_info.reason === 'B2B User') {
+      const orgName = data._auth_info.organization || 'B2B';
+      badge.textContent = `Organizacja: ${orgName}`;
+      badge.classList.remove('hidden');
+      planInfo.textContent = `Subskrypcja firmowa: ${orgName}`;
+      btnManagePlan.classList.add('hidden');
+    } else {
+      badge.classList.add('hidden');
+      planInfo.innerHTML = `Plan: <strong style="color:var(--success)">Aktywny</strong><br>Konto: ${userEmail}<br>Koszt: 10$ / miesiąc`;
+      btnManagePlan.classList.remove('hidden');
+    }
   }
 
   // Wymuszony zakres priority
@@ -280,7 +375,8 @@ function renderResults(data) {
             emailText: formatEmailForPrompt(currentEmailData),
             userEmail: userEmail,
             prompt: selectedType,
-            mode: "preset"
+            mode: "preset",
+            language: currentLang
           })
         });
         const resData = await response.json();
@@ -315,7 +411,8 @@ function renderResults(data) {
           emailText: formatEmailForPrompt(currentEmailData),
           userEmail: userEmail,
           prompt: promptValue,
-          mode: 'generate'
+          mode: 'generate',
+          language: currentLang
         })
       });
       const resData = await response.json();
