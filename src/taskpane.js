@@ -264,12 +264,35 @@ async function readCurrentEmail() {
 // Backend API (Vercel/Local)
 // ──────────────────────────────────────
 
+async function getSsoToken() {
+  return new Promise((resolve) => {
+    if (!Office.context.auth || typeof Office.context.auth.getAccessTokenAsync !== 'function') {
+      console.warn("SSO is not supported in this client version.");
+      return resolve(null);
+    }
+    Office.context.auth.getAccessTokenAsync({ allowSignInPrompt: true }, (result) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        resolve(result.value);
+      } else {
+        console.error("SSO Error:", result.error);
+        resolve(null); // Fallback if error occurs
+      }
+    });
+  });
+}
+
 async function callBackendAPI(emailData) {
   const emailText = formatEmailForPrompt(emailData);
 
+  const ssoToken = await getSsoToken();
+  const headers = { 'Content-Type': 'application/json' };
+  if (ssoToken) {
+    headers['Authorization'] = `Bearer ${ssoToken}`;
+  }
+
   const response = await fetch(BACKEND_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: headers,
     body: JSON.stringify({
       emailText: emailText,
       userEmail: userEmail,

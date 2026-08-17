@@ -28,7 +28,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html?v=6"/>
+        <SourceLocation DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html?v=7"/>
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -78,7 +78,7 @@
         <bt:Image id="icon80" DefaultValue="https://Solider1337.github.io/mailpilot/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="taskPaneUrl" DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html?v=6"/>
+        <bt:Url id="taskPaneUrl" DefaultValue="https://Solider1337.github.io/mailpilot/src/taskpane.html?v=7"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="MailPilot AI"/>
@@ -92,6 +92,7 @@
       <Requirements>
         <bt:Sets DefaultMinVersion="1.5">
           <bt:Set Name="Mailbox"/>
+          <bt:Set Name="IdentityAPI" MinVersion="1.3"/>
         </bt:Sets>
       </Requirements>
       <Hosts>
@@ -123,6 +124,16 @@
           </DesktopFormFactor>
         </Host>
       </Hosts>
+      <WebApplicationInfo>
+        <Id>30e8dc04-4ffd-4cf7-944b-dc66634cf441</Id>
+        <Resource>api://30e8dc04-4ffd-4cf7-944b-dc66634cf441</Resource>
+        <Scopes>
+          <Scope>profile</Scope>
+          <Scope>user.read</Scope>
+          <Scope>openid</Scope>
+          <Scope>access_as_user</Scope>
+        </Scopes>
+      </WebApplicationInfo>
     </VersionOverrides>
   </VersionOverrides>
 </OfficeApp>
