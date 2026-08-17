@@ -123,15 +123,15 @@
             <div id="redflags-banner" class="card card-danger hidden">
                 <span class="danger-icon">🚩</span>
                 <div class="danger-content">
-                    <span class="danger-label">Wykryto ryzyko:</span>
+                    <span class="danger-label" data-i18n="riskDetected">Wykryto ryzyko:</span>
                     <ul id="redflags-list" class="danger-list"></ul>
                 </div>
             </div>
 
             <!-- Summary Section -->
-            <div class="section-title">Summary</div>
+            <div class="section-title" data-i18n="summary">Summary</div>
             <div class="card card-summary">
-                <div class="card-subtitle">Key Takeaways</div>
+                <div class="card-subtitle" data-i18n="keyTakeaways">Key Takeaways</div>
                 <div class="summary-content">
                     <ul id="summary-list" class="summary-list">
                         <li id="summary-text"></li>
@@ -140,42 +140,42 @@
             </div>
 
             <!-- Draft & Generate -->
-            <div class="section-title mt-2">✨ Mail Maestro Mode</div>
+            <div class="section-title mt-2" data-i18n="mailMaestroMode">✨ Mail Maestro Mode</div>
             <div id="card-draft" class="card card-draft">
                 <div class="draft-tabs" style="display: flex; gap: 8px; margin-bottom: 12px;">
-                    <button id="tab-preset" class="btn btn-primary" style="flex:1; padding: 6px;">Gotowa odpowiedź</button>
-                    <button id="tab-custom" class="btn btn-secondary" style="flex:1; padding: 6px;">Własna odpowiedź</button>
+                    <button id="tab-preset" class="btn btn-primary" style="flex:1; padding: 6px;" data-i18n="tabPreset">Gotowa odpowiedź</button>
+                    <button id="tab-custom" class="btn btn-secondary" style="flex:1; padding: 6px;" data-i18n="tabCustom">Własna odpowiedź</button>
                 </div>
                 
                 <!-- Left Tab: Preset -->
                 <div id="draft-preset-area">
-                    <label class="draft-label">Wybierz styl odpowiedzi:</label>
+                    <label class="draft-label" data-i18n="chooseStyle">Wybierz styl odpowiedzi:</label>
                     <select id="draft-selector" class="draft-selector mb-1"></select>
                     <textarea id="draft-preset-text" class="draft-textarea" rows="4" spellcheck="true"></textarea>
                     
                     <div class="draft-actions mt-1">
                         <button id="btn-copy-preset" class="btn btn-secondary btn-full">
-                            <span class="btn-icon">📋</span> Kopiuj
+                            <span class="btn-icon">📋</span> <span data-i18n="copy">Kopiuj</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Right Tab: Custom -->
                 <div id="draft-custom-area" class="hidden">
-                    <label class="draft-label">Instrukcja dla AI:</label>
+                    <label class="draft-label" data-i18n="instructionForAi">Instrukcja dla AI:</label>
                     <textarea id="draft-prompt" class="draft-textarea mb-1" rows="4" placeholder="np. Zgódź się i zaproponuj czwartek..."></textarea>
                     
                     <button id="btn-generate-draft" class="btn btn-primary btn-full mt-1">
-                        <span class="btn-icon">✨</span> Generuj odpowiedź
+                        <span class="btn-icon">✨</span> <span data-i18n="generateReply">Generuj odpowiedź</span>
                     </button>
                     
                     <div id="draft-custom-result-area" class="hidden mt-2" style="border-top: 1px solid var(--border-color); padding-top: 10px;">
-                        <label class="draft-label">Wynik:</label>
+                        <label class="draft-label" data-i18n="result">Wynik:</label>
                         <textarea id="draft-custom-text" class="draft-textarea" rows="4" spellcheck="true"></textarea>
                         
                         <div class="draft-actions mt-1">
                             <button id="btn-copy-custom" class="btn btn-secondary btn-full">
-                                <span class="btn-icon">📋</span> Kopiuj
+                                <span class="btn-icon">📋</span> <span data-i18n="copy">Kopiuj</span>
                             </button>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
 
             <!-- Action Items & Tasks -->
             <div id="section-tasks" class="hidden">
-                <div class="section-title">Action Items & Tasks</div>
+                <div class="section-title" data-i18n="actionItems">Action Items & Tasks</div>
                 <div id="tasks-grid" class="tasks-grid">
                     <!-- Tasks will be injected here -->
                 </div>
@@ -192,24 +192,24 @@
 
             <!-- Extracted Entities -->
             <div id="section-entities" class="hidden">
-                <div class="section-title">Extracted Entities</div>
+                <div class="section-title" data-i18n="extractedEntities">Extracted Entities</div>
                 
                 <div id="extracted-contacts" class="extracted-subgroup hidden">
-                    <div class="subgroup-title">Contacts</div>
+                    <div class="subgroup-title" data-i18n="contacts">Contacts</div>
                     <div id="contacts-grid" class="contacts-grid">
                         <!-- Contacts injected here -->
                     </div>
                 </div>
 
                 <div id="extracted-dates" class="extracted-subgroup hidden">
-                    <div class="subgroup-title">Dates/Events</div>
+                    <div class="subgroup-title" data-i18n="datesEvents">Dates/Events</div>
                     <div id="dates-list" class="entities-list">
                         <!-- Dates injected here -->
                     </div>
                 </div>
 
                 <div id="extracted-amounts" class="extracted-subgroup hidden">
-                    <div class="subgroup-title">Financials</div>
+                    <div class="subgroup-title" data-i18n="financials">Financials</div>
                     <div id="amounts-list" class="entities-list">
                         <!-- Amounts injected here -->
                     </div>
@@ -219,10 +219,10 @@
             <!-- Actions Card (Re-analyze, etc) -->
             <div class="card card-actions-card mt-2">
                 <button id="btn-apply-category" class="btn btn-primary btn-full hidden">
-                    <span class="btn-icon">🏷️</span> Zastosuj kategorię
+                    <span class="btn-icon">🏷️</span> <span data-i18n="applyCategory">Zastosuj kategorię</span>
                 </button>
                 <button id="btn-reanalyze" class="btn btn-secondary btn-full mt-1">
-                    <span class="btn-icon">🔄</span> Wymuś analizę
+                    <span class="btn-icon">🔄</span> <span data-i18n="forceAnalysis">Wymuś analizę</span>
                 </button>
             </div>
         </div>
