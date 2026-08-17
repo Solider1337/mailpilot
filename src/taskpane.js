@@ -83,7 +83,12 @@ function initSettings() {
   btnSettings.onclick = () => modal.classList.remove('hidden');
   btnCloseSettings.onclick = () => modal.classList.add('hidden');
   
-  selLang.onchange = (e) => applyLanguage(e.target.value);
+  selLang.onchange = (e) => {
+    applyLanguage(e.target.value);
+    if (currentEmailData) {
+      analyzeEmailData(currentEmailData);
+    }
+  };
   selTheme.onchange = (e) => applyTheme(e.target.value);
   
   document.getElementById('btn-manage-plan').onclick = () => {
