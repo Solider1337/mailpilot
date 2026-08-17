@@ -125,7 +125,7 @@
       </Hosts>
       <WebApplicationInfo>
         <Id>30e8dc04-4ffd-4cf7-944b-dc66634cf441</Id>
-        <Resource>api://30e8dc04-4ffd-4cf7-944b-dc66634cf441</Resource>
+        <Resource>api://Solider1337.github.io/30e8dc04-4ffd-4cf7-944b-dc66634cf441</Resource>
         <Scopes>
           <Scope>profile</Scope>
           <Scope>user.read</Scope>
