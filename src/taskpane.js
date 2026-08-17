@@ -26,7 +26,8 @@ const DICT = {
     tabPreset: "Gotowa odpowiedź", tabCustom: "Własna odpowiedź", chooseStyle: "Wybierz styl odpowiedzi:", copy: "Kopiuj",
     instructionForAi: "Instrukcja dla AI:", generateReply: "Generuj odpowiedź", result: "Wynik:",
     actionItems: "Zadania do wykonania", extractedEntities: "Wykryte informacje", contacts: "Kontakty", datesEvents: "Daty / Wydarzenia", financials: "Finanse",
-    applyCategory: "Zastosuj kategorię", forceAnalysis: "Wymuś analizę"
+    applyCategory: "Zastosuj kategorię", forceAnalysis: "Wymuś analizę",
+    orgPrefix: "Organizacja:", b2bPlanPrefix: "Subskrypcja firmowa:", planPrefix: "Plan:", active: "Aktywny", accountPrefix: "Konto:", costPrefix: "Koszt: 10$ / miesiąc"
   },
   en: {
     settingsTitle: "Settings", languageLabel: "App Language:", themeLabel: "Theme:", themeLight: "Light", themeDark: "Dark", planLabel: "Subscription:", managePlanBtn: "Manage",
@@ -34,7 +35,8 @@ const DICT = {
     tabPreset: "Preset Reply", tabCustom: "Custom Reply", chooseStyle: "Choose reply style:", copy: "Copy",
     instructionForAi: "Instruction for AI:", generateReply: "Generate Reply", result: "Result:",
     actionItems: "Action Items & Tasks", extractedEntities: "Extracted Entities", contacts: "Contacts", datesEvents: "Dates / Events", financials: "Financials",
-    applyCategory: "Apply Category", forceAnalysis: "Force Analysis"
+    applyCategory: "Apply Category", forceAnalysis: "Force Analysis",
+    orgPrefix: "Organization:", b2bPlanPrefix: "Corporate Subscription:", planPrefix: "Plan:", active: "Active", accountPrefix: "Account:", costPrefix: "Cost: $10 / month"
   },
   de: {
     settingsTitle: "Einstellungen", languageLabel: "Sprache:", themeLabel: "Thema:", themeLight: "Hell", themeDark: "Dunkel", planLabel: "Abonnement:", managePlanBtn: "Verwalten",
@@ -291,16 +293,17 @@ async function callBackendAPI(emailData) {
     const badge = document.getElementById('org-badge');
     const planInfo = document.getElementById('plan-info');
     const btnManagePlan = document.getElementById('btn-manage-plan');
+    const dict = DICT[currentLang] || DICT.en;
     
     if (data._auth_info.reason === 'B2B User') {
       const orgName = data._auth_info.organization || 'B2B';
-      badge.textContent = `Organizacja: ${orgName}`;
+      badge.textContent = `${dict.orgPrefix || DICT.en.orgPrefix} ${orgName}`;
       badge.classList.remove('hidden');
-      planInfo.textContent = `Subskrypcja firmowa: ${orgName}`;
+      planInfo.textContent = `${dict.b2bPlanPrefix || DICT.en.b2bPlanPrefix} ${orgName}`;
       btnManagePlan.classList.add('hidden');
     } else {
       badge.classList.add('hidden');
-      planInfo.innerHTML = `Plan: <strong style="color:var(--success)">Aktywny</strong><br>Konto: ${userEmail}<br>Koszt: 10$ / miesiąc`;
+      planInfo.innerHTML = `${dict.planPrefix || DICT.en.planPrefix} <strong style="color:var(--success)">${dict.active || DICT.en.active}</strong><br>${dict.accountPrefix || DICT.en.accountPrefix} ${userEmail}<br>${dict.costPrefix || DICT.en.costPrefix}`;
       btnManagePlan.classList.remove('hidden');
     }
   }
