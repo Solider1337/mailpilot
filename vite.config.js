@@ -19,6 +19,7 @@ export default defineConfig({
         taskpane: resolve(__dirname, 'src/taskpane.html'),
         privacy: resolve(__dirname, 'src/privacy.html'),
         terms: resolve(__dirname, 'src/terms.html'),
+        checkout: resolve(__dirname, 'src/checkout.html'),
       },
     },
   },
