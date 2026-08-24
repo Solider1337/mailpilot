@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>MailPilot Premium - Checkout</title>
+  <style>
+    :root {
+      --bg-primary: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --accent-start: #4F46E5;
+      --border: #E2E8F0;
+      --radius-lg: 12px;
+      --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
+      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0F172A;
+        --bg-card: #1E293B;
+        --text-primary: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --border: #334155;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .checkout-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      width: 100%;
+      max-width: 600px;
+      padding: 40px;
+      margin: 20px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent-start), #3B82F6);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+
+    h1 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin: 0 0 30px 0;
+      line-height: 1.5;
+    }
+
+    .stripe-embed-placeholder {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 40px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      background: var(--bg-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class='checkout-container'>
+    <div class='logo'>
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/></svg>
+    </div>
+    
+    <h1>Upgrade to MailPilot Premium</h1>
+    <p>Otrzymaj pelny dostep do nielimitowanej analizy wiadomosci i odpisywania na maile za pomoca sztucznej inteligencji.</p>
+
+    <div id='stripe-container'>
+      <div class='stripe-embed-placeholder'>
+        [TUTAJ WKLEJ SKRYPT ZE STRIPE: BUY BUTTON LUB PRICING TABLE]
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
