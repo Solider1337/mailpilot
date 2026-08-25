@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>MailPilot - Admin Panel</title>
+  <style>
+    :root {
+      --bg-primary: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --accent-start: #4F46E5;
+      --border: #E2E8F0;
+      --radius-lg: 12px;
+      --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
+      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0F172A;
+        --bg-card: #1E293B;
+        --text-primary: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --border: #334155;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--accent-start), #3B82F6);
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    h2 {
+      margin: 0 0 16px 0;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      background: var(--accent-start);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-small {
+      padding: 4px 8px;
+      font-size: 12px;
+      margin-right: 4px;
+    }
+
+    input, select {
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .flex-gap {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 60vh;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .status-green { background: #16A34A; }
+    .status-red { background: #DC2626; }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="header">
+    <div class="logo">
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/></svg>
+    </div>
+    <h1>MailPilot Admin</h1>
+  </div>
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="card">
+    <h2>Admin Login</h2>
+    <div class="flex-gap">
+      <input type="password" id="admin-secret" placeholder="Admin Secret" />
+      <button class="btn" onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="admin-panel" class="hidden">
+    
+    <!-- Orgs -->
+    <div class="card">
+      <h2>Organizations</h2>
+      <div class="flex-gap">
+        <input type="text" id="org-name" placeholder="Name (e.g. Autome)" />
+        <input type="text" id="org-domain" placeholder="Domain (e.g. @autome.pl)" />
+        <button class="btn" onclick="addOrg()">Add Org</button>
+      </div>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>Domain</th><th>Active</th></tr></thead>
+        <tbody id="orgs-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Users -->
+    <div class="card">
+      <h2>Users</h2>
+      <div class="flex-gap">
+        <input type="email" id="user-email" placeholder="Email" />
+        <select id="user-org">
+          <option value="">No Organization</option>
+        </select>
+        <label><input type="checkbox" id="user-premium" /> Premium</label>
+        <button class="btn" onclick="addUser()">Add / Update User</button>
+      </div>
+      <table>
+        <thead><tr><th>Email</th><th>Org</th><th>Premium</th><th>Usage</th><th>Actions</th></tr></thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const API_BASE = 'https://backend-beta-one-53.vercel.app';
+let secret = '';
+
+function login() {
+  secret = document.getElementById('admin-secret').value;
+  if (!secret) return;
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('admin-panel').classList.remove('hidden');
+  loadData();
+}
+
+async function loadData() {
+  try {
+    const [usersRes, orgsRes] = await Promise.all([
+      fetch(\\/api/admin/users?secret=\\),
+      fetch(\\/api/admin/orgs?secret=\\)
+    ]);
+    
+    if (usersRes.status === 403 || orgsRes.status === 403) {
+      alert('Invalid secret');
+      location.reload();
+      return;
+    }
+
+    const usersData = await usersRes.json();
+    const orgsData = await orgsRes.json();
+
+    // Populate Orgs Dropdown
+    const orgSelect = document.getElementById('user-org');
+    orgSelect.innerHTML = '<option value="">No Organization</option>';
+    orgsData.orgs.forEach(o => {
+      orgSelect.innerHTML += \<option value="\">\</option>\;
+    });
+
+    // Populate Orgs Table
+    document.getElementById('orgs-tbody').innerHTML = orgsData.orgs.map(o => \
+      <tr>
+        <td>\</td>
+        <td>\</td>
+        <td>\</td>
+        <td><span class="status-dot \"></span></td>
+      </tr>
+    \).join('');
+
+    // Populate Users Table
+    document.getElementById('users-tbody').innerHTML = usersData.users.map(u => \
+      <tr>
+        <td>\</td>
+        <td>\</td>
+        <td><span class="status-dot \"></span> \</td>
+        <td>\</td>
+        <td>
+          <button class="btn btn-small" onclick="togglePremium('\', \)">Toggle Premium</button>
+          <button class="btn btn-small" onclick="removeOrg('\')">Remove Org</button>
+        </td>
+      </tr>
+    \).join('');
+
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+async function addOrg() {
+  const name = document.getElementById('org-name').value;
+  const domain = document.getElementById('org-domain').value;
+  if (!name || !domain) return;
+  await fetch(\\/api/admin/add-org?secret=\\, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, domain, is_active: true })
+  });
+  loadData();
+}
+
+async function addUser() {
+  const email = document.getElementById('user-email').value;
+  const orgId = document.getElementById('user-org').value;
+  const premium = document.getElementById('user-premium').checked;
+  if (!email) return;
+  await fetch(\\/api/admin/add-user?secret=\\, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      email, 
+      organization_id: orgId ? parseInt(orgId) : null, 
+      is_premium_active: premium 
+    })
+  });
+  loadData();
+}
+
+async function togglePremium(email, active) {
+  await fetch(\\/api/admin/toggle-premium?email=\&active=\&secret=\\, { method: 'POST' });
+  loadData();
+}
+
+async function removeOrg(email) {
+  await fetch(\\/api/admin/remove-user-org?email=\&secret=\\, { method: 'POST' });
+  loadData();
+}
+
+</script>
+</body>
+</html>

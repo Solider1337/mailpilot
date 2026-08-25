@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>MailPilot - My Account</title>
+  <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --accent-start: #4F46E5;
+      --border: #E2E8F0;
+      --radius-lg: 12px;
+      --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
+      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #0F172A;
+        --bg-card: #1E293B;
+        --text-primary: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --border: #334155;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent-start), #3B82F6);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      margin: 0 0 32px 0;
+    }
+
+    .info-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .info-value {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: white;
+      font-weight: 700;
+    }
+    .badge-premium { background: #16A34A; }
+    .badge-trial { background: #D97706; }
+    .badge-b2b { background: #0284C7; }
+    .badge-expired { background: #DC2626; }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--accent-start);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 12px;
+    }
+    .btn:hover { opacity: 0.9; }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { background: var(--bg-primary); }
+
+    .hidden { display: none !important; }
+
+    .loader {
+      border: 3px solid var(--border);
+      border-top: 3px solid var(--accent-start);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px auto;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/></svg>
+  </div>
+  <h1>MailPilot AI</h1>
+  <p class="subtitle">Manage your account and subscription</p>
+
+  <div id="login-view">
+    <button class="btn" onclick="login()">Sign in with Microsoft</button>
+  </div>
+
+  <div id="loading-view" class="hidden">
+    <div class="loader"></div>
+    <p>Loading account details...</p>
+  </div>
+
+  <div id="account-view" class="hidden">
+    <div class="info-box">
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value" id="val-email">...</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Plan Status</span>
+        <span class="badge" id="val-plan">...</span>
+      </div>
+      <div class="info-row hidden" id="row-org">
+        <span class="info-label">Organization</span>
+        <span class="info-value" id="val-org">...</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Usage (Month)</span>
+        <span class="info-value"><span id="val-usage">0</span> analyses</span>
+      </div>
+    </div>
+
+    <a href="checkout.html" class="btn hidden" id="btn-upgrade">Upgrade to Premium</a>
+    <a href="https://billing.stripe.com/p/login/" target="_blank" class="btn hidden" id="btn-manage">Manage Subscription</a>
+    
+    <button class="btn btn-outline" onclick="window.close()">Close window</button>
+  </div>
+</div>
+
+<script>
+const msalConfig = {
+  auth: {
+    clientId: '30e8dc04-4ffd-4cf7-944b-dc66634cf441',
+    authority: 'https://login.microsoftonline.com/common',
+    redirectUri: window.location.origin + '/mailpilot/src/account.html'
+  }
+};
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+const loginRequest = {
+  scopes: ['api://Solider1337.github.io/30e8dc04-4ffd-4cf7-944b-dc66634cf441/access_as_user']
+};
+
+async function login() {
+  try {
+    const loginResponse = await msalInstance.loginPopup(loginRequest);
+    fetchData(loginResponse.accessToken);
+  } catch (err) {
+    console.error(err);
+    alert('Login failed. Check console.');
+  }
+}
+
+async function fetchData(token) {
+  document.getElementById('login-view').classList.add('hidden');
+  document.getElementById('loading-view').classList.remove('hidden');
+
+  try {
+    const res = await fetch('https://backend-beta-one-53.vercel.app/api/me', {
+      headers: { 'Authorization': \Bearer \\ }
+    });
+    const data = await res.json();
+    
+    document.getElementById('loading-view').classList.add('hidden');
+    document.getElementById('account-view').classList.remove('hidden');
+
+    document.getElementById('val-email').innerText = data.email;
+    document.getElementById('val-usage').innerText = data.usage_count || 0;
+
+    const planBadge = document.getElementById('val-plan');
+    if (data.plan === 'premium') {
+      planBadge.innerText = 'PREMIUM';
+      planBadge.className = 'badge badge-premium';
+      document.getElementById('btn-manage').classList.remove('hidden');
+    } else if (data.plan === 'trial') {
+      planBadge.innerText = 'TRIAL';
+      planBadge.className = 'badge badge-trial';
+      document.getElementById('btn-upgrade').classList.remove('hidden');
+    } else if (data.plan === 'b2b') {
+      planBadge.innerText = 'ORGANIZATION';
+      planBadge.className = 'badge badge-b2b';
+      document.getElementById('row-org').classList.remove('hidden');
+      document.getElementById('val-org').innerText = data.organization;
+    } else {
+      planBadge.innerText = 'EXPIRED';
+      planBadge.className = 'badge badge-expired';
+      document.getElementById('btn-upgrade').classList.remove('hidden');
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert('Failed to fetch account info.');
+  }
+}
+</script>
+</body>
+</html>
