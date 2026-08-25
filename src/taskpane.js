@@ -314,19 +314,47 @@ async function callBackendAPI(emailData) {
   // Ustaw odznakę organizacji i status planu w Ustawieniach
   if (data._auth_info) {
     const badge = document.getElementById('org-badge');
+    const planBadge = document.getElementById('plan-badge');
     const planInfo = document.getElementById('plan-info');
     const btnManagePlan = document.getElementById('btn-manage-plan');
     const dict = DICT[currentLang] || DICT.en;
+    const plan = data._auth_info.plan;
     
-    if (data._auth_info.reason === 'B2B User') {
+    // Plan badge w headerze (obok "AI")
+    if (planBadge) {
+      planBadge.classList.remove('hidden', 'badge-pro', 'badge-trial', 'badge-expired');
+      if (plan === 'premium') {
+        planBadge.textContent = 'PRO';
+        planBadge.classList.add('badge-pro');
+      } else if (plan === 'trial') {
+        planBadge.textContent = 'TRIAL';
+        planBadge.classList.add('badge-trial');
+      } else if (plan === 'b2b') {
+        planBadge.classList.add('hidden'); // B2B ma osobny badge org
+      } else {
+        planBadge.textContent = '!';
+        planBadge.classList.add('badge-expired');
+      }
+    }
+    
+    // Badge organizacji
+    if (plan === 'b2b') {
       const orgName = data._auth_info.organization || 'B2B';
       badge.textContent = `${dict.orgPrefix || DICT.en.orgPrefix} ${orgName}`;
       badge.classList.remove('hidden');
       planInfo.textContent = `${dict.b2bPlanPrefix || DICT.en.b2bPlanPrefix} ${orgName}`;
       btnManagePlan.classList.add('hidden');
-    } else {
+    } else if (plan === 'premium') {
       badge.classList.add('hidden');
       planInfo.innerHTML = `${dict.planPrefix || DICT.en.planPrefix} <strong style="color:var(--success)">${dict.active || DICT.en.active}</strong><br>${dict.accountPrefix || DICT.en.accountPrefix} ${userEmail}<br>${dict.costPrefix || DICT.en.costPrefix}`;
+      btnManagePlan.classList.remove('hidden');
+    } else if (plan === 'trial') {
+      badge.classList.add('hidden');
+      planInfo.innerHTML = `${dict.planPrefix || DICT.en.planPrefix} <strong style="color:#D97706">Trial</strong><br>${dict.accountPrefix || DICT.en.accountPrefix} ${userEmail}`;
+      btnManagePlan.classList.remove('hidden');
+    } else {
+      badge.classList.add('hidden');
+      planInfo.innerHTML = `<strong style="color:var(--danger)">Expired</strong><br>${dict.accountPrefix || DICT.en.accountPrefix} ${userEmail}`;
       btnManagePlan.classList.remove('hidden');
     }
   }

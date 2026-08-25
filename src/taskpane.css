@@ -140,6 +140,39 @@ body {
   box-shadow: 0 0 12px rgba(124, 92, 252, 0.3);
 }
 
+.badge-pro {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #16A34A, #22C55E);
+  color: white;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badge-trial {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #D97706, #F59E0B);
+  color: white;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badge-expired {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #DC2626, #EF4444);
+  color: white;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 /* ======== States ======== */
 .state {
   display: flex;

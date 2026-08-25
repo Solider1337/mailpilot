@@ -20,6 +20,8 @@ export default defineConfig({
         privacy: resolve(__dirname, 'src/privacy.html'),
         terms: resolve(__dirname, 'src/terms.html'),
         checkout: resolve(__dirname, 'src/checkout.html'),
+        account: resolve(__dirname, 'src/account.html'),
+        admin: resolve(__dirname, 'src/admin.html'),
       },
     },
   },
