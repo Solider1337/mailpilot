@@ -1,194 +1,354 @@
-<!DOCTYPE html>
-<html lang='en'>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>MailPilot Premium - Checkout</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MailPilot AI – Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* ── Lucid Enterprise Design System ── */
     :root {
-      --bg-primary: #F8FAFC;
-      --bg-card: #FFFFFF;
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --accent-start: #4F46E5;
-      --border: #E2E8F0;
-      --radius-lg: 12px;
-      --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
-      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      --bg-primary:    #F1F5F9;
+      --bg-card:       #FFFFFF;
+      --bg-glass:      rgba(255,255,255,0.72);
+      --text-primary:  #0D1523;
+      --text-secondary:#4A5568;
+      --text-muted:    #94A3B8;
+      --accent-start:  #4F46E5;
+      --accent-end:    #818CF8;
+      --ai-start:      #4F46E5;
+      --ai-end:        #06B6D4;
+      --success:       #10B981;
+      --border:        rgba(15,23,42,0.10);
+      --border-accent: rgba(79,70,229,0.30);
+      --shadow-card:   0 2px 8px rgba(15,23,42,0.05), 0 8px 24px rgba(15,23,42,0.04);
+      --shadow-accent: 0 4px 20px rgba(79,70,229,0.25);
+      --shadow-accent-hover: 0 6px 32px rgba(79,70,229,0.45);
+      --shadow-modal:  0 20px 60px rgba(15,23,42,0.15), 0 8px 24px rgba(15,23,42,0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 32px;
+      --font: "Inter", "Segoe UI", system-ui, sans-serif;
     }
-    
+
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg-primary: #0F172A;
-        --bg-card: #1E293B;
-        --text-primary: #F8FAFC;
-        --text-secondary: #CBD5E1;
-        --border: #334155;
+        --bg-primary:    #0B0F19;
+        --bg-card:       #151E2E;
+        --bg-glass:      rgba(15,23,42,0.75);
+        --text-primary:  #F0F4FF;
+        --text-secondary:#94A3B8;
+        --text-muted:    #475569;
+        --border:        rgba(255,255,255,0.08);
+        --border-accent: rgba(99,102,241,0.40);
+        --shadow-card:   0 2px 8px rgba(0,0,0,0.30), 0 8px 24px rgba(0,0,0,0.25);
+        --shadow-accent: 0 4px 20px rgba(79,70,229,0.35);
+        --shadow-accent-hover: 0 6px 32px rgba(99,102,241,0.55);
+        --shadow-modal:  0 20px 60px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.40);
       }
     }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      padding: 0;
       font-family: var(--font);
-      background-color: var(--bg-primary);
+      background: var(--bg-primary);
       color: var(--text-primary);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      padding: 24px 16px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .checkout-container {
-      background-color: var(--bg-card);
+    /* Animated background orbs */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #4F46E5, transparent);
+      top: -100px; left: -100px;
+      animation: orb1 10s ease-in-out infinite alternate;
+    }
+    body::after {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #06B6D4, transparent);
+      bottom: -80px; right: -80px;
+      animation: orb2 12s ease-in-out infinite alternate;
+    }
+    @keyframes orb1 { from { transform: translate(0,0); } to { transform: translate(60px,40px); } }
+    @keyframes orb2 { from { transform: translate(0,0); } to { transform: translate(-40px,-60px); } }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-card);
-      width: 100%;
-      max-width: 600px;
-      padding: 40px;
-      margin: 20px;
+      padding: 36px 36px 32px;
       text-align: center;
-      box-sizing: border-box;
+      animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
     }
 
-    .logo {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--accent-start), #3B82F6);
-      border-radius: 16px;
-      display: inline-flex;
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
-    .logo svg {
-      width: 32px;
-      height: 32px;
-      fill: white;
+    .logo-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, var(--ai-start), var(--ai-end));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(79,70,229,0.35);
+      animation: float 4s ease-in-out infinite;
     }
 
-    h1 {
-      margin: 0 0 10px 0;
-      font-size: 24px;
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
+    }
+
+    .logo-icon svg { width: 26px; height: 26px; fill: white; }
+
+    .logo-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Price ── */
+    .price-block { margin-bottom: 6px; }
+
+    .price-tag {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .price-tag .currency { font-size: 1.5rem; vertical-align: top; margin-top: 6px; display: inline-block; }
+    .price-tag .period   { font-size: 1rem; font-weight: 500; color: var(--text-muted); margin-left: 4px; }
+
+    .price-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Trial badge ── */
+    .trial-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #059669, #10B981);
+      color: white;
+      padding: 7px 18px;
+      border-radius: var(--radius-xl);
+      font-size: 0.82rem;
       font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 14px rgba(16,185,129,0.30);
     }
 
-    p {
-      color: var(--text-secondary);
-      margin: 0 0 30px 0;
-      line-height: 1.5;
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0 24px;
     }
 
+    /* ── Features ── */
     .features {
-      text-align: left;
-      margin: 0 0 30px 0;
-      padding: 0;
       list-style: none;
+      padding: 0;
+      margin: 0 0 28px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .features li {
-      padding: 8px 0;
-      color: var(--text-secondary);
-      font-size: 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      transition: background 0.15s ease;
     }
 
-    .features li::before {
-      content: '✓';
-      color: #16A34A;
-      font-weight: 700;
-      font-size: 16px;
+    .features li:hover {
+      background: rgba(79,70,229,0.05);
+    }
+
+    .check {
+      width: 20px; height: 20px;
+      background: linear-gradient(135deg, #059669, #10B981);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
-    }
-
-    .price-tag {
-      font-size: 36px;
-      font-weight: 800;
-      margin: 0 0 5px 0;
-      color: var(--text-primary);
-    }
-
-    .price-tag span {
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--text-secondary);
-    }
-
-    .trial-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #16A34A, #22C55E);
+      font-size: 0.7rem;
       color: white;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 24px;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(16,185,129,0.30);
     }
 
-    .buy-btn {
-      display: block;
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--accent-start), #3B82F6);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      box-sizing: border-box;
-      transition: opacity 0.2s, transform 0.2s;
+    /* ── Stripe embed wrapper ── */
+    .stripe-wrap {
+      margin-bottom: 16px;
     }
 
-    .buy-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-
+    /* ── Secure note ── */
     .secure-note {
-      margin-top: 16px;
-      font-size: 12px;
-      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
+    .secure-note svg { width: 14px; height: 14px; }
+
+    /* ── Comparison pill (subtle) ── */
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-accent);
+      color: var(--accent-start);
+      background: rgba(79,70,229,0.06);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Footer link ── */
+    .footer-links {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+    .footer-links a { color: var(--text-muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--text-secondary); text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <div class='checkout-container'>
-    <div class='logo'>
-      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/></svg>
+<div class="page-wrapper">
+
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </div>
+      <span class="logo-name">MailPilot</span>
     </div>
-    
-    <h1>Upgrade to MailPilot Premium</h1>
-    <p>Unlock the full power of your AI email assistant.</p>
 
-    <div class='price-tag'>$10 <span>/ month</span></div>
-    <div class='trial-badge'>🎉 7 days free trial</div>
+    <!-- Price -->
+    <div class="price-block">
+      <div class="price-tag">
+        <span class="currency">$</span>10<span class="period">/ month</span>
+      </div>
+    </div>
+    <p class="price-sub">One plan. Full access. No hidden fees.</p>
 
-    <ul class='features'>
-      <li>Unlimited AI email analysis</li>
-      <li>Smart reply generation in any language</li>
-      <li>Auto-extract tasks, contacts, dates & financials</li>
-      <li>Priority detection & risk alerts</li>
-      <li>Custom AI-powered reply drafts</li>
-      <li>Cancel anytime, no questions asked</li>
+    <div class="trial-badge">
+      🎉 7 days free — no charge today
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Features -->
+    <ul class="features">
+      <li><span class="check">✓</span> Unlimited AI email analysis</li>
+      <li><span class="check">✓</span> Smart replies in any language</li>
+      <li><span class="check">✓</span> Auto-extract tasks, contacts &amp; financials</li>
+      <li><span class="check">✓</span> Priority detection &amp; phishing risk alerts</li>
+      <li><span class="check">✓</span> Custom AI-powered drafts</li>
+      <li><span class="check">✓</span> Cancel anytime — instantly, no hassle</li>
     </ul>
 
-    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-    <stripe-buy-button
-      buy-button-id="buy_btn_1U84roI7kE6uKsAI6Gfl1P88"
-      publishable-key="pk_live_51HNnCxI7kE6uKsAI9uDJeyhnjdEWtEx6E73aC8aqqZo5jyPWwo4VFp8zJUz0vgQfhcdiWteymtWNEMupaGC9Dasd00RtMQqH52"
-    >
-    </stripe-buy-button>
-    <p class='secure-note'>🔒 Secured by Stripe. Cancel anytime. No charge for 7 days.</p>
+    <!-- Stripe Buy Button -->
+    <div class="stripe-wrap">
+      <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+      <stripe-buy-button
+        buy-button-id="buy_btn_1U84roI7kE6uKsAI6Gfl1P88"
+        publishable-key="pk_live_51HNnCxI7kE6uKsAI9uDJeyhnjdEWtEx6E73aC8aqqZo5jyPWwo4VFp8zJUz0vgQfhcdiWteymtWNEMupaGC9Dasd00RtMQqH52"
+      ></stripe-buy-button>
+    </div>
+
+    <!-- Secure -->
+    <p class="secure-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Secured by Stripe &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; No charge for 7 days
+    </p>
+
   </div>
+
+  <!-- Footer links -->
+  <div class="footer-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="account.html">My Account</a>
+  </div>
+
+</div>
 
 </body>
 </html>
