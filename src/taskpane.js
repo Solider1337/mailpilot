@@ -167,12 +167,18 @@ function initSettings() {
     } catch (e) {
       console.warn("Could not get email for checkout url", e);
     }
-    const checkoutUrl = 'https://Solider1337.github.io/mailpilot/src/checkout.html' + emailParam;
+    const checkoutUrlBase = 'https://Solider1337.github.io/mailpilot/src/checkout.html' + emailParam;
     
-    // Zamiast otwierać samemu z kodu (bo HTML ma tagi <a>) – zmieniamy URL we wszystkich przyciskach w locie, żeby tag <a> robił resztę
-    document.querySelectorAll('a[href*="checkout.html"]').forEach(link => {
-        link.href = checkoutUrl;
-    });
+    // Ustawienie różnych URLi w zależności od przycisku
+    const linkTrial = document.getElementById('link-start-trial');
+    if (linkTrial) {
+        linkTrial.href = checkoutUrlBase + (emailParam ? '&' : '?') + 'type=trial';
+    }
+    
+    const linkUpgrade = document.getElementById('link-upgrade');
+    if (linkUpgrade) {
+        linkUpgrade.href = checkoutUrlBase + (emailParam ? '&' : '?') + 'type=direct';
+    }
   };
 
   // Uruchamiamy aktualizację linków podczas startu panelu.

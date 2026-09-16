@@ -286,20 +286,35 @@
 
     <!-- CTA -->
     <div class="cta-section">
-      <p class="cta-label">Start your free 7-day trial</p>
+      <p class="cta-label" id="dynamic-cta-label">Start your free 7-day trial</p>
       <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-      <stripe-buy-button
-        id="stripe-btn"
-        buy-button-id="buy_btn_1U84roI7kE6uKsAI6Gfl1P88"
-        publishable-key="pk_live_51HNnCxI7kE6uKsAI9uDJeyhnjdEWtEx6E73aC8aqqZo5jyPWwo4VFp8zJUz0vgQfhcdiWteymtWNEMupaGC9Dasd00RtMQqH52"
-      ></stripe-buy-button>
+      <div id="stripe-button-container"></div>
       <script>
-        // Pre-fill the Stripe checkout with the user's email if provided in the URL
         const urlParams = new URLSearchParams(window.location.search);
         const userEmail = urlParams.get('email');
-        if (userEmail) {
-          document.getElementById('stripe-btn').setAttribute('customer-email', userEmail);
+        const checkoutType = urlParams.get('type') || 'trial';
+        
+        // Zmień teksty jeśli to bezpośredni upgrade
+        if (checkoutType === 'direct') {
+            document.querySelector('.price-tag').innerHTML = '<span class="currency">$</span>10<span class="period">/ month</span>';
+            document.querySelector('.price-sub').innerHTML = 'Unlimited access. Cancel anytime.';
+            document.getElementById('dynamic-cta-label').innerText = 'Upgrade to Premium';
         }
+
+        // Ustalenie odpowiedniego przycisku Stripe
+        const stripeBtnId = (checkoutType === 'direct') 
+            ? 'buy_btn_1UGOxYI7kE6uKsAICaTiBmv4' 
+            : 'buy_btn_1U84roI7kE6uKsAI6Gfl1P88';
+            
+        // Renderowanie komponentu
+        const container = document.getElementById('stripe-button-container');
+        container.innerHTML = `
+          <stripe-buy-button
+            buy-button-id="${stripeBtnId}"
+            publishable-key="pk_live_51HNnCxI7kE6uKsAI9uDJeyhnjdEWtEx6E73aC8aqqZo5jyPWwo4VFp8zJUz0vgQfhcdiWteymtWNEMupaGC9Dasd00RtMQqH52"
+            ${userEmail ? `customer-email="${userEmail}"` : ''}
+          ></stripe-buy-button>
+        `;
       </script>
     </div>
 
