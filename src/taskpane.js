@@ -157,21 +157,29 @@ function initSettings() {
   
   const openCheckoutDialog = () => {
     const checkoutUrl = 'https://Solider1337.github.io/mailpilot/src/checkout.html';
-    Office.context.ui.displayDialogAsync(
-      checkoutUrl,
-      { height: 75, width: 45, displayInIframe: false },
-      (result) => {
-        if (result.status === Office.AsyncResultStatus.Failed) {
-          window.open(checkoutUrl, '_blank');
-        }
+    try {
+      if (Office && Office.context && Office.context.ui && Office.context.ui.displayDialogAsync) {
+        Office.context.ui.displayDialogAsync(
+          checkoutUrl,
+          { height: 75, width: 45, displayInIframe: false },
+          (asyncResult) => {
+            if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+              console.warn('Dialog failed, opening browser:', asyncResult.error);
+              window.open(checkoutUrl, '_blank');
+            }
+          }
+        );
+      } else {
+        window.open(checkoutUrl, '_blank');
       }
-    );
+    } catch (e) {
+      console.error('Dialog error:', e);
+      window.open(checkoutUrl, '_blank');
+    }
   };
 
   document.getElementById('btn-manage-plan').onclick = openCheckoutDialog;
   document.getElementById('btn-upgrade-premium').onclick = openCheckoutDialog;
-
-  // Przycisk Start Free Trial — otwiera checkout jako dialog wewnątrz Outlooka
   document.getElementById('btn-start-trial').onclick = openCheckoutDialog;
 }
 
