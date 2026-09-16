@@ -289,9 +289,18 @@
       <p class="cta-label">Start your free 7-day trial</p>
       <script async src="https://js.stripe.com/v3/buy-button.js"></script>
       <stripe-buy-button
+        id="stripe-btn"
         buy-button-id="buy_btn_1U84roI7kE6uKsAI6Gfl1P88"
         publishable-key="pk_live_51HNnCxI7kE6uKsAI9uDJeyhnjdEWtEx6E73aC8aqqZo5jyPWwo4VFp8zJUz0vgQfhcdiWteymtWNEMupaGC9Dasd00RtMQqH52"
       ></stripe-buy-button>
+      <script>
+        // Pre-fill the Stripe checkout with the user's email if provided in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userEmail = urlParams.get('email');
+        if (userEmail) {
+          document.getElementById('stripe-btn').setAttribute('customer-email', userEmail);
+        }
+      </script>
     </div>
 
     <p class="secure-note">
