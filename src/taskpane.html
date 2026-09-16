@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/mailpilot/assets/taskpane-D7rZt3i7.js"></script>
+  <script type="module" crossorigin src="/mailpilot/assets/taskpane-BG7UQQJe.js"></script>
   <link rel="stylesheet" crossorigin href="/mailpilot/assets/taskpane-BF-f74f0.css">
 </head>
 <body>
@@ -70,18 +70,44 @@
             </div>
         </div>
 
-        <!-- License Error State -->
+        <!-- NEW USER — Onboarding / Trial Start -->
+        <div id="new-user-state" class="state hidden">
+            <div class="card card-settings">
+                <div class="settings-header">
+                    <span class="settings-icon" style="font-size:2.8rem;">✈️</span>
+                    <h2 class="settings-title">Welcome to MailPilot AI</h2>
+                    <p class="settings-subtitle">Your AI-powered email assistant for Microsoft Outlook. Analyze emails, auto-generate replies, detect tasks and risks — in seconds.</p>
+                </div>
+                <div class="settings-form">
+                    <div style="background:var(--accent-bg);border:1px solid var(--border-accent);border-radius:var(--radius-sm);padding:14px 16px;text-align:center;">
+                        <div style="font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;color:var(--text-primary);">7 days free</div>
+                        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Then $10 / month — cancel anytime</div>
+                    </div>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;">
+                        <li style="font-size:0.82rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="color:var(--success);font-weight:700;">✓</span> Unlimited AI email analysis</li>
+                        <li style="font-size:0.82rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="color:var(--success);font-weight:700;">✓</span> Smart replies in any language</li>
+                        <li style="font-size:0.82rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="color:var(--success);font-weight:700;">✓</span> Auto-extract tasks, dates & contacts</li>
+                        <li style="font-size:0.82rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px;"><span style="color:var(--success);font-weight:700;">✓</span> Phishing & risk detection</li>
+                    </ul>
+                    <button id="btn-start-trial" class="btn btn-ai btn-full" style="padding:13px;font-size:0.9rem;">
+                        <span class="btn-icon">🚀</span> Start Free Trial — No credit card needed
+                    </button>
+                    <p class="input-hint" style="text-align:center;">Account: <strong id="new-user-email">...</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPIRED — Upgrade to Premium -->
         <div id="license-state" class="state hidden">
             <div class="card card-settings">
                 <div class="settings-header">
                     <span class="settings-icon">🔒</span>
-                    <h2 class="settings-title">Subscription Required</h2>
-                    <p class="settings-subtitle">Your trial has expired. Upgrade to keep using MailPilot AI.</p>
+                    <h2 class="settings-title">Trial Expired</h2>
+                    <p class="settings-subtitle">Upgrade to keep using MailPilot AI — unlimited access for $10/month.</p>
                 </div>
                 <div class="settings-form">
                     <p class="input-hint">
-                        Account: <strong id="current-user-email">...</strong><br><br>
-                        Get unlimited AI email analysis, smart replies, and more for just $10/month with a 7-day free trial.
+                        Account: <strong id="current-user-email">...</strong>
                     </p>
                     <a href="https://Solider1337.github.io/mailpilot/src/checkout.html" target="_blank" rel="noopener" class="btn btn-primary btn-full">
                         <span class="btn-icon">💳</span> Upgrade to Premium ($10/mo)
@@ -92,6 +118,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Loading State -->
         <div id="loading-state" class="state hidden">
