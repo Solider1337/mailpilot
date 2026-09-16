@@ -155,42 +155,24 @@ function initSettings() {
   };
   selTheme.onchange = (e) => applyTheme(e.target.value);
   
-  document.getElementById('btn-manage-plan').onclick = () => {
-    window.open('https://Solider1337.github.io/mailpilot/src/checkout.html', '_blank');
+  const openCheckoutDialog = () => {
+    const checkoutUrl = 'https://Solider1337.github.io/mailpilot/src/checkout.html';
+    Office.context.ui.displayDialogAsync(
+      checkoutUrl,
+      { height: 75, width: 45, displayInIframe: false },
+      (result) => {
+        if (result.status === Office.AsyncResultStatus.Failed) {
+          window.open(checkoutUrl, '_blank');
+        }
+      }
+    );
   };
 
-  // Przycisk Start Free Trial (ekran onboardingu nowego użytkownika)
-  document.getElementById('btn-start-trial').onclick = async () => {
-    const btn = document.getElementById('btn-start-trial');
-    const emailEl = document.getElementById('new-user-email');
-    const userEmail = emailEl?.textContent || '';
-    btn.disabled = true;
-    btn.innerHTML = '<span class="btn-icon">⏳</span> Starting...';
-    try {
-      const BACKEND_URL = 'https://backend-beta-one-53.vercel.app';
-      const ssoToken = await getSsoToken().catch(() => null);
-      const headers = { 'Content-Type': 'application/json' };
-      if (ssoToken) headers['Authorization'] = `Bearer ${ssoToken}`;
-      const res = await fetch(`${BACKEND_URL}/api/start-trial`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify({ userEmail })
-      });
-      const data = await res.json();
-      if (res.ok && (data.status === 'trial_started' || data.status === 'already_active')) {
-        showState('loading-state');
-        // Ponowna analiza maila
-        setTimeout(() => readCurrentEmail(), 800);
-      } else {
-        btn.disabled = false;
-        btn.innerHTML = '<span class="btn-icon">🚀</span> Start Free Trial — No credit card needed';
-        alert(data.detail || 'Something went wrong. Try again.');
-      }
-    } catch (e) {
-      btn.disabled = false;
-      btn.innerHTML = '<span class="btn-icon">🚀</span> Start Free Trial — No credit card needed';
-    }
-  };
+  document.getElementById('btn-manage-plan').onclick = openCheckoutDialog;
+  document.getElementById('btn-upgrade-premium').onclick = openCheckoutDialog;
+
+  // Przycisk Start Free Trial — otwiera checkout jako dialog wewnątrz Outlooka
+  document.getElementById('btn-start-trial').onclick = openCheckoutDialog;
 }
 
 // ──────────────────────────────────────
