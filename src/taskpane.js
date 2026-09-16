@@ -164,7 +164,6 @@ function initSettings() {
           { height: 75, width: 45, displayInIframe: false },
           (asyncResult) => {
             if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-              console.warn('Dialog failed, opening browser:', asyncResult.error);
               window.open(checkoutUrl, '_blank');
             }
           }
@@ -173,14 +172,18 @@ function initSettings() {
         window.open(checkoutUrl, '_blank');
       }
     } catch (e) {
-      console.error('Dialog error:', e);
       window.open(checkoutUrl, '_blank');
     }
   };
 
-  document.getElementById('btn-manage-plan').onclick = openCheckoutDialog;
-  document.getElementById('btn-upgrade-premium').onclick = openCheckoutDialog;
-  document.getElementById('btn-start-trial').onclick = openCheckoutDialog;
+  // Expose globally so inline onclick attributes also work
+  window.openCheckoutDialog = openCheckoutDialog;
+
+  // Safe assignment — skip if element doesn't exist
+  const el = (id) => document.getElementById(id);
+  if (el('btn-manage-plan'))    el('btn-manage-plan').onclick    = openCheckoutDialog;
+  if (el('btn-upgrade-premium')) el('btn-upgrade-premium').onclick = openCheckoutDialog;
+  if (el('btn-start-trial'))    el('btn-start-trial').onclick    = openCheckoutDialog;
 }
 
 // ──────────────────────────────────────
