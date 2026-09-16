@@ -156,25 +156,27 @@ function initSettings() {
   selTheme.onchange = (e) => applyTheme(e.target.value);
   
   const openCheckoutDialog = () => {
-    const checkoutUrl = 'https://Solider1337.github.io/mailpilot/src/checkout.html';
+    let emailParam = '';
     try {
-      if (Office && Office.context && Office.context.ui && Office.context.ui.displayDialogAsync) {
-        Office.context.ui.displayDialogAsync(
-          checkoutUrl,
-          { height: 75, width: 45, displayInIframe: false },
-          (asyncResult) => {
-            if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-              window.open(checkoutUrl, '_blank');
-            }
-          }
-        );
-      } else {
-        window.open(checkoutUrl, '_blank');
+      if (Office && Office.context && Office.context.mailbox && Office.context.mailbox.userProfile) {
+        const userEmail = Office.context.mailbox.userProfile.emailAddress;
+        if (userEmail) {
+          emailParam = '?email=' + encodeURIComponent(userEmail);
+        }
       }
     } catch (e) {
-      window.open(checkoutUrl, '_blank');
+      console.warn("Could not get email for checkout url", e);
     }
+    const checkoutUrl = 'https://Solider1337.github.io/mailpilot/src/checkout.html' + emailParam;
+    
+    // Zamiast otwierać samemu z kodu (bo HTML ma tagi <a>) – zmieniamy URL we wszystkich przyciskach w locie, żeby tag <a> robił resztę
+    document.querySelectorAll('a[href*="checkout.html"]').forEach(link => {
+        link.href = checkoutUrl;
+    });
   };
+
+  // Uruchamiamy aktualizację linków podczas startu panelu.
+  setTimeout(openCheckoutDialog, 1500);
 
   // Expose globally so inline onclick attributes also work
   window.openCheckoutDialog = openCheckoutDialog;
