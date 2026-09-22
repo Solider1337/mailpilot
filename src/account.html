@@ -392,6 +392,11 @@
                     <a id="link-upgrade-account" href="https://Solider1337.github.io/mailpilot/src/checkout.html?type=direct" target="_blank" class="btn btn-primary">
                         Upgrade to Premium — $10/month
                     </a>
+                    <div style="text-align:center; margin-top:12px;">
+                        <a id="link-manage-expired" href="https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00" target="_blank" class="btn btn-secondary" style="background:transparent; border:none; box-shadow:none; color:var(--text-secondary); font-size:0.8rem; padding:4px;">
+                            Manage billing & past invoices
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Manage (shown for premium) -->
@@ -498,13 +503,18 @@
     }
 
     function renderMinimal(token) {
-        // Decode email from token for display
+        let email = '';
         try {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            const email = payload.preferred_username || payload.email || payload.upn || '—';
+            email = payload.preferred_username || payload.email || payload.upn || '—';
             document.getElementById('profile-email').textContent = email;
             document.getElementById('avatar-initials').textContent = email[0].toUpperCase();
         } catch(e) {}
+        
+        const portalUrl = 'https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00?prefilled_email=' + encodeURIComponent(email);
+        const linkManageExpired = document.getElementById('link-manage-expired');
+        if (linkManageExpired) linkManageExpired.href = portalUrl;
+
         document.getElementById('sub-plan').textContent = 'No active plan';
         document.getElementById('row-trial-ends').style.display = 'none';
         show('cta-upgrade');
@@ -558,8 +568,8 @@
         }
 
         // CTA buttons
+        const portalUrl = 'https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00?prefilled_email=' + encodeURIComponent(email);
         if (data.plan === 'premium' || data.plan === 'b2b') {
-            const portalUrl = 'https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00?prefilled_email=' + encodeURIComponent(email);
             document.getElementById('link-stripe-portal').href = portalUrl;
             document.getElementById('link-cancel').href = portalUrl;
             show('cta-manage');
@@ -570,6 +580,8 @@
                 + (data.plan === 'trial' ? 'trial' : 'direct') 
                 + '&email=' + encodeURIComponent(email);
             document.getElementById('link-upgrade-account').href = checkoutUrl;
+            const linkManageExpired = document.getElementById('link-manage-expired');
+            if (linkManageExpired) linkManageExpired.href = portalUrl;
             show('cta-upgrade');
         }
         
