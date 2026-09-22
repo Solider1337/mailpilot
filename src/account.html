@@ -1,271 +1,622 @@
-﻿<!DOCTYPE html>
-<html lang='en'>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>MailPilot - My Account</title>
-  <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
-  <style>
-    :root {
-      --bg-primary: #F8FAFC;
-      --bg-card: #FFFFFF;
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --accent-start: #4F46E5;
-      --border: #E2E8F0;
-      --radius-lg: 12px;
-      --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
-      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-primary: #0F172A;
-        --bg-card: #1E293B;
-        --text-primary: #F8FAFC;
-        --text-secondary: #CBD5E1;
-        --border: #334155;
-      }
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — MailPilot AI</title>
+    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+    <style>
+        :root {
+            --bg: #F8FAFC;
+            --surface: #ffffff;
+            --surface-2: #F1F5F9;
+            --text: #0F172A;
+            --text-muted: #64748B;
+            --text-subtle: #94A3B8;
+            --border: #E2E8F0;
+            --accent: #4F46E5;
+            --accent-light: rgba(79,70,229,0.08);
+            --accent-border: rgba(79,70,229,0.2);
+            --cyan: #06B6D4;
+            --success: #10B981;
+            --success-light: rgba(16,185,129,0.08);
+            --warning: #F59E0B;
+            --warning-light: rgba(245,158,11,0.08);
+            --danger: #EF4444;
+            --danger-light: rgba(239,68,68,0.08);
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+            --radius: 12px;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0A0F1E;
+                --surface: #111827;
+                --surface-2: #1E293B;
+                --text: #F1F5F9;
+                --text-muted: #94A3B8;
+                --text-subtle: #64748B;
+                --border: #1E293B;
+                --accent-light: rgba(79,70,229,0.12);
+                --accent-border: rgba(79,70,229,0.3);
+                --success-light: rgba(16,185,129,0.1);
+                --warning-light: rgba(245,158,11,0.1);
+                --danger-light: rgba(239,68,68,0.1);
+                --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
+            }
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px 16px 40px;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: var(--font);
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+        /* ── Layout ── */
+        .page { max-width: 680px; margin: 0 auto; }
 
-    .card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-card);
-      padding: 40px;
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
-      box-sizing: border-box;
-    }
+        /* ── Header ── */
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .page-header img { width: 36px; height: 36px; border-radius: 8px; }
+        .page-header-text h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.03em; }
+        .page-header-text p { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
 
-    .logo {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--accent-start), #3B82F6);
-      border-radius: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
+        /* ── Card ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 16px 20px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+        }
+        .card-body { padding: 20px; }
 
-    .logo svg {
-      width: 32px;
-      height: 32px;
-      fill: white;
-    }
+        /* ── Plan Badge ── */
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .badge-premium { background: var(--success-light); color: var(--success); border: 1px solid rgba(16,185,129,0.25); }
+        .badge-trial   { background: var(--warning-light); color: var(--warning); border: 1px solid rgba(245,158,11,0.25); }
+        .badge-b2b     { background: var(--accent-light);  color: var(--accent);  border: 1px solid var(--accent-border); }
+        .badge-expired { background: var(--danger-light);  color: var(--danger);  border: 1px solid rgba(239,68,68,0.25); }
 
-    h1 {
-      margin: 0 0 8px 0;
-      font-size: 24px;
-    }
-    
-    .subtitle {
-      color: var(--text-secondary);
-      margin: 0 0 32px 0;
-    }
+        /* ── Profile row ── */
+        .profile-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .avatar {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--cyan));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: 700; color: white;
+            flex-shrink: 0;
+        }
+        .profile-info h2 { font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; }
+        .profile-info p  { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
 
-    .info-box {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 24px;
-      text-align: left;
-    }
+        /* ── Stats grid ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .stat-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+        .stat-value { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text); line-height: 1; }
+        .stat-label { font-size: 0.68rem; color: var(--text-subtle); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+        .stat-icon  { font-size: 1.1rem; margin-bottom: 6px; }
 
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .info-row:last-child {
-      border-bottom: none;
-    }
+        /* ── Info rows ── */
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .info-row:first-child { padding-top: 0; }
+        .info-label { font-size: 0.82rem; color: var(--text-muted); }
+        .info-value { font-size: 0.82rem; font-weight: 600; color: var(--text); }
 
-    .info-label {
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.15s;
+            width: 100%;
+        }
+        .btn + .btn { margin-top: 8px; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--cyan));
+            color: white;
+            box-shadow: 0 4px 14px rgba(79,70,229,0.25);
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-secondary {
+            background: var(--surface-2);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-danger-ghost {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid rgba(239,68,68,0.2);
+            font-size: 0.78rem;
+            padding: 8px 14px;
+            width: auto;
+        }
+        .btn-danger-ghost:hover { background: var(--danger-light); }
 
-    .info-value {
-      font-weight: 600;
-      font-size: 14px;
-    }
+        /* ── Alert banner ── */
+        .alert {
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            font-size: 0.84rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .alert-warning {
+            background: var(--warning-light);
+            border: 1px solid rgba(245,158,11,0.25);
+            color: var(--warning);
+        }
+        .alert-danger {
+            background: var(--danger-light);
+            border: 1px solid rgba(239,68,68,0.25);
+            color: var(--danger);
+        }
+        .alert strong { display: block; font-weight: 700; margin-bottom: 2px; }
 
-    .badge {
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      color: white;
-      font-weight: 700;
-    }
-    .badge-premium { background: #16A34A; }
-    .badge-trial { background: #D97706; }
-    .badge-b2b { background: #0284C7; }
-    .badge-expired { background: #DC2626; }
+        /* ── Login screen ── */
+        #login-screen {
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        #login-screen img { width: 64px; height: 64px; border-radius: 14px; margin-bottom: 20px; }
+        #login-screen h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+        #login-screen p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 28px; max-width: 320px; }
+        .ms-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 4px 14px rgba(79,70,229,0.3);
+        }
+        .ms-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .ms-btn svg { width: 20px; height: 20px; }
 
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: var(--accent-start);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 600;
-      text-decoration: none;
-      margin-bottom: 12px;
-    }
-    .btn:hover { opacity: 0.9; }
+        /* ── Loading ── */
+        #loading-screen {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 80px 20px; color: var(--text-muted); font-size: 0.88rem; gap: 16px;
+        }
+        .spinner {
+            width: 32px; height: 32px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-    .btn-outline {
-      background: transparent;
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover { background: var(--bg-primary); }
+        /* ── Footer ── */
+        .legal-footer {
+            display: flex; justify-content: center; gap: 16px;
+            padding-top: 24px;
+            font-size: 0.7rem;
+            color: var(--text-subtle);
+        }
+        .legal-footer a { color: var(--text-subtle); text-decoration: none; }
+        .legal-footer a:hover { color: var(--text-muted); }
 
-    .hidden { display: none !important; }
-
-    .loader {
-      border: 3px solid var(--border);
-      border-top: 3px solid var(--accent-start);
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 16px auto;
-    }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-  </style>
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
+<div class="page">
 
-<div class="card">
-  <div class="logo">
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M2.01 21L23 12 2.01 3 2 10l15 2-15 2z'/></svg>
-  </div>
-  <h1>MailPilot AI</h1>
-  <p class="subtitle">Manage your account and subscription</p>
-
-  <div id="login-view">
-    <button class="btn" onclick="login()">Sign in with Microsoft</button>
-  </div>
-
-  <div id="loading-view" class="hidden">
-    <div class="loader"></div>
-    <p>Loading account details...</p>
-  </div>
-
-  <div id="account-view" class="hidden">
-    <div class="info-box">
-      <div class="info-row">
-        <span class="info-label">Email</span>
-        <span class="info-value" id="val-email">...</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Plan Status</span>
-        <span class="badge" id="val-plan">...</span>
-      </div>
-      <div class="info-row hidden" id="row-org">
-        <span class="info-label">Organization</span>
-        <span class="info-value" id="val-org">...</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Usage (Month)</span>
-        <span class="info-value"><span id="val-usage">0</span> analyses</span>
-      </div>
+    <!-- Loading -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <span>Loading your account...</span>
     </div>
 
-    <a href="checkout.html" class="btn hidden" id="btn-upgrade">Upgrade to Premium</a>
-    <a href="https://billing.stripe.com/p/login/" target="_blank" class="btn hidden" id="btn-manage">Manage Subscription</a>
-    
-    <button class="btn btn-outline" onclick="window.close()">Close window</button>
-  </div>
-</div>
+    <!-- Login -->
+    <div id="login-screen" class="hidden">
+        <img src="/mailpilot/assets/icon-128.png" alt="MailPilot AI"/>
+        <h2>Sign in to MailPilot AI</h2>
+        <p>Access your account details, subscription status and usage statistics.</p>
+        <button class="ms-btn" onclick="signIn()">
+            <svg viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
+                <rect x="11" y="1" width="9" height="9" fill="#7FBA00"/>
+                <rect x="1" y="11" width="9" height="9" fill="#00A4EF"/>
+                <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+            </svg>
+            Continue with Microsoft
+        </button>
+    </div>
+
+    <!-- Main account panel -->
+    <div id="account-panel" class="hidden">
+
+        <!-- Page header -->
+        <div class="page-header">
+            <img src="/mailpilot/assets/icon-80.png" alt="MailPilot AI"/>
+            <div class="page-header-text">
+                <h1>My Account</h1>
+                <p>MailPilot AI · Manage your subscription</p>
+            </div>
+        </div>
+
+        <!-- Alert: Trial warning -->
+        <div id="alert-trial" class="alert alert-warning hidden">
+            <span>⚠️</span>
+            <div>
+                <strong>Trial ending soon</strong>
+                Your free trial ends on <span id="trial-end-date"></span>. Upgrade now to keep access.
+            </div>
+        </div>
+
+        <!-- Alert: Expired -->
+        <div id="alert-expired" class="alert alert-danger hidden">
+            <span>🔒</span>
+            <div>
+                <strong>Access suspended</strong>
+                Your trial has expired. Upgrade to Premium to restore access to MailPilot AI.
+            </div>
+        </div>
+
+        <!-- Profile card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Profile</span>
+                <span id="plan-badge-top" class="plan-badge"></span>
+            </div>
+            <div class="card-body">
+                <div class="profile-row">
+                    <div class="avatar" id="avatar-initials">M</div>
+                    <div class="profile-info">
+                        <h2 id="profile-email">—</h2>
+                        <p id="profile-org">Personal account</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Your Activity</span>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-value" id="stat-emails">0</div>
+                        <div class="stat-label">Emails Analyzed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value" id="stat-time">0h</div>
+                        <div class="stat-label">Time Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🧠</div>
+                        <div class="stat-value" id="stat-insights">0</div>
+                        <div class="stat-label">AI Insights</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Subscription</span>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <span class="info-label">Plan</span>
+                    <span class="info-value" id="sub-plan">—</span>
+                </div>
+                <div class="info-row" id="row-trial-ends">
+                    <span class="info-label">Trial ends</span>
+                    <span class="info-value" id="sub-trial-ends">—</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Member since</span>
+                    <span class="info-value" id="sub-since">—</span>
+                </div>
+                <div class="info-row" id="row-org" style="display:none;">
+                    <span class="info-label">Organization</span>
+                    <span class="info-value" id="sub-org">—</span>
+                </div>
+
+                <!-- Upgrade CTA (shown for trial/expired) -->
+                <div id="cta-upgrade" class="hidden" style="margin-top:16px;">
+                    <a id="link-upgrade-account" href="https://Solider1337.github.io/mailpilot/src/checkout.html?type=direct" target="_blank" class="btn btn-primary">
+                        Upgrade to Premium — $10/month
+                    </a>
+                </div>
+
+                <!-- Manage (shown for premium) -->
+                <div id="cta-manage" class="hidden" style="margin-top:16px;">
+                    <a id="link-stripe-portal" href="https://billing.stripe.com/p/login/dR6bJGdGM7sg1zq4gg" target="_blank" class="btn btn-secondary">
+                        Manage Billing & Invoices
+                    </a>
+                    <!-- Cancel — subtly available but not screaming -->
+                    <div style="text-align:center; margin-top:12px;">
+                        <a id="link-cancel" href="https://billing.stripe.com/p/login/dR6bJGdGM7sg1zq4gg" target="_blank" class="btn btn-danger-ghost">
+                            Cancel subscription
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About app card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">About MailPilot AI</span>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <span class="info-label">Version</span>
+                    <span class="info-value">2.1.0</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Platform</span>
+                    <span class="info-value">Microsoft Outlook Add-in</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">AI Engine</span>
+                    <span class="info-value">Google Gemini</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Data Privacy</span>
+                    <span class="info-value" style="color: var(--success); font-size:0.78rem;">✓ Emails never stored</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign out -->
+        <button class="btn btn-secondary" onclick="signOut()" style="margin-top:4px;">
+            Sign out
+        </button>
+
+        <!-- Legal footer -->
+        <div class="legal-footer">
+            <a href="https://Solider1337.github.io/mailpilot/src/terms.html" target="_blank">Terms of Service</a>
+            <span>·</span>
+            <a href="https://Solider1337.github.io/mailpilot/src/privacy.html" target="_blank">Privacy Policy</a>
+            <span>·</span>
+            <a href="https://Solider1337.github.io/mailpilot/src/support.html" target="_blank">Support</a>
+        </div>
+
+    </div><!-- /account-panel -->
+</div><!-- /page -->
 
 <script>
-const msalConfig = {
-  auth: {
-    clientId: '30e8dc04-4ffd-4cf7-944b-dc66634cf441',
-    authority: 'https://login.microsoftonline.com/common',
-    redirectUri: window.location.origin + '/mailpilot/src/account.html'
-  }
-};
-const msalInstance = new msal.PublicClientApplication(msalConfig);
-const loginRequest = {
-  scopes: ['api://Solider1337.github.io/30e8dc04-4ffd-4cf7-944b-dc66634cf441/access_as_user']
-};
+    const MSAL_CONFIG = {
+        auth: {
+            clientId: '30e8dc04-4ffd-4cf7-944b-dc66634cf441',
+            authority: 'https://login.microsoftonline.com/common',
+            redirectUri: 'https://Solider1337.github.io/mailpilot/src/account.html',
+        },
+        cache: { cacheLocation: 'localStorage' }
+    };
+    const SCOPES = ['openid', 'profile', 'User.Read'];
+    const BACKEND = 'https://backend-beta-one-53.vercel.app';
 
-async function login() {
-  try {
-    const loginResponse = await msalInstance.loginPopup(loginRequest);
-    fetchData(loginResponse.accessToken);
-  } catch (err) {
-    console.error(err);
-    alert('Login failed. Check console.');
-  }
-}
+    const msalInstance = new msal.PublicClientApplication(MSAL_CONFIG);
 
-async function fetchData(token) {
-  document.getElementById('login-view').classList.add('hidden');
-  document.getElementById('loading-view').classList.remove('hidden');
+    function show(id) { document.getElementById(id).classList.remove('hidden'); }
+    function hide(id) { document.getElementById(id).classList.add('hidden'); }
 
-  try {
-    const res = await fetch('https://backend-beta-one-53.vercel.app/api/me', {
-      headers: { 'Authorization': \Bearer \\ }
-    });
-    const data = await res.json();
-    
-    document.getElementById('loading-view').classList.add('hidden');
-    document.getElementById('account-view').classList.remove('hidden');
-
-    document.getElementById('val-email').innerText = data.email;
-    document.getElementById('val-usage').innerText = data.usage_count || 0;
-
-    const planBadge = document.getElementById('val-plan');
-    if (data.plan === 'premium') {
-      planBadge.innerText = 'PREMIUM';
-      planBadge.className = 'badge badge-premium';
-      document.getElementById('btn-manage').classList.remove('hidden');
-    } else if (data.plan === 'trial') {
-      planBadge.innerText = 'TRIAL';
-      planBadge.className = 'badge badge-trial';
-      document.getElementById('btn-upgrade').classList.remove('hidden');
-    } else if (data.plan === 'b2b') {
-      planBadge.innerText = 'ORGANIZATION';
-      planBadge.className = 'badge badge-b2b';
-      document.getElementById('row-org').classList.remove('hidden');
-      document.getElementById('val-org').innerText = data.organization;
-    } else {
-      planBadge.innerText = 'EXPIRED';
-      planBadge.className = 'badge badge-expired';
-      document.getElementById('btn-upgrade').classList.remove('hidden');
+    function planLabel(plan) {
+        const map = { premium: 'Premium', trial: 'Free Trial', b2b: 'Organization', expired: 'Expired', new_user: 'No Plan' };
+        return map[plan] || plan;
+    }
+    function planBadgeClass(plan) {
+        const map = { premium: 'badge-premium', trial: 'badge-trial', b2b: 'badge-b2b', expired: 'badge-expired' };
+        return map[plan] || 'badge-expired';
     }
 
-  } catch (err) {
-    console.error(err);
-    alert('Failed to fetch account info.');
-  }
-}
+    async function loadAccount(token) {
+        try {
+            const res = await fetch(BACKEND + '/api/me', {
+                headers: { Authorization: 'Bearer ' + token }
+            });
+
+            if (res.status === 404) {
+                // User not in DB yet — show minimal info
+                renderMinimal(token);
+                return;
+            }
+            if (!res.ok) throw new Error('API error ' + res.status);
+            const data = await res.json();
+            renderAccount(data, token);
+        } catch (e) {
+            console.error(e);
+            renderMinimal(token);
+        }
+    }
+
+    function renderMinimal(token) {
+        // Decode email from token for display
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const email = payload.preferred_username || payload.email || payload.upn || '—';
+            document.getElementById('profile-email').textContent = email;
+            document.getElementById('avatar-initials').textContent = email[0].toUpperCase();
+        } catch(e) {}
+        document.getElementById('sub-plan').textContent = 'No active plan';
+        document.getElementById('row-trial-ends').style.display = 'none';
+        show('cta-upgrade');
+        hide('loading-screen');
+        show('account-panel');
+    }
+
+    function renderAccount(data, token) {
+        // Profile
+        const email = data.email || '—';
+        document.getElementById('profile-email').textContent = email;
+        document.getElementById('avatar-initials').textContent = email[0].toUpperCase();
+        if (data.organization) {
+            document.getElementById('profile-org').textContent = data.organization;
+            document.getElementById('row-org').style.display = 'flex';
+            document.getElementById('sub-org').textContent = data.organization;
+        }
+
+        // Plan badge
+        const badge = document.getElementById('plan-badge-top');
+        badge.textContent = planLabel(data.plan);
+        badge.className = 'plan-badge ' + planBadgeClass(data.plan);
+
+        // Stats — emails analyzed + derived metrics
+        const analyzed = data.usage_count || 0;
+        const timeSaved = Math.round(analyzed * 3.5); // avg 3.5 min per email
+        const insights  = Math.round(analyzed * 4.2); // avg 4.2 insights per email
+        document.getElementById('stat-emails').textContent = analyzed;
+        document.getElementById('stat-time').textContent   = timeSaved >= 60 ? Math.round(timeSaved/60) + 'h' : timeSaved + 'm';
+        document.getElementById('stat-insights').textContent = insights;
+
+        // Subscription info
+        document.getElementById('sub-plan').textContent = planLabel(data.plan);
+        document.getElementById('sub-since').textContent = data.member_since || '—';
+
+        // Trial dates
+        if (data.plan === 'trial' && data.trial_ends) {
+            document.getElementById('sub-trial-ends').textContent = data.trial_ends;
+            if (data.trial_remaining_days !== null && data.trial_remaining_days <= 2) {
+                document.getElementById('trial-end-date').textContent = data.trial_ends;
+                show('alert-trial');
+            }
+        } else {
+            document.getElementById('row-trial-ends').style.display = 'none';
+        }
+
+        // Expired alert
+        if (data.plan === 'expired') {
+            show('alert-expired');
+        }
+
+        // CTA buttons
+        if (data.plan === 'premium' || data.plan === 'b2b') {
+            show('cta-manage');
+        } else {
+            // trial / expired / new_user -> show upgrade CTA
+            // Pass email to checkout URL
+            const checkoutUrl = 'https://Solider1337.github.io/mailpilot/src/checkout.html?type=' 
+                + (data.plan === 'trial' ? 'trial' : 'direct') 
+                + '&email=' + encodeURIComponent(email);
+            document.getElementById('link-upgrade-account').href = checkoutUrl;
+            show('cta-upgrade');
+        }
+
+        hide('loading-screen');
+        show('account-panel');
+    }
+
+    async function signIn() {
+        try {
+            const result = await msalInstance.loginPopup({ scopes: SCOPES });
+            msalInstance.setActiveAccount(result.account);
+            const tokenResult = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: result.account });
+            await loadAccount(tokenResult.idToken);
+        } catch (e) {
+            console.error('Login error', e);
+            alert('Sign in failed. Please try again.');
+        }
+    }
+
+    function signOut() {
+        msalInstance.logoutPopup();
+    }
+
+    async function init() {
+        await msalInstance.initialize();
+
+        // Handle redirect
+        try {
+            const result = await msalInstance.handleRedirectPromise();
+            if (result) {
+                msalInstance.setActiveAccount(result.account);
+            }
+        } catch(e) {}
+
+        const accounts = msalInstance.getAllAccounts();
+        if (accounts.length > 0) {
+            msalInstance.setActiveAccount(accounts[0]);
+            try {
+                const tokenResult = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accounts[0] });
+                await loadAccount(tokenResult.idToken);
+                return;
+            } catch (e) {
+                // Silent failed — fall through to login screen
+            }
+        }
+
+        hide('loading-screen');
+        show('login-screen');
+    }
+
+    init();
 </script>
 </body>
 </html>
