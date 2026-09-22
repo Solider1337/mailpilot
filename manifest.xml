@@ -5,14 +5,14 @@
            xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
            xsi:type="MailApp">
   <Id>e2f1f0a1-b8d4-4f2a-8c3b-5e9a7d6c4b2a</Id>
-  <Version>2.0.0</Version>
+  <Version>2.1.0</Version>
   <ProviderName>Autome</ProviderName>
-  <DefaultLocale>pl-PL</DefaultLocale>
+  <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="MailPilot AI"/>
-  <Description DefaultValue="AI email assistant that analyzes, prioritizes, and drafts replies."/>
+  <Description DefaultValue="AI email assistant for Outlook. Analyze emails, generate smart replies, extract tasks and contacts automatically."/>
   <IconUrl DefaultValue="https://Solider1337.github.io/mailpilot/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://Solider1337.github.io/mailpilot/assets/icon-80.png"/>
-  <SupportUrl DefaultValue="https://Solider1337.github.io/mailpilot/"/>
+  <SupportUrl DefaultValue="https://Solider1337.github.io/mailpilot/src/support.html"/>
   <AppDomains>
     <AppDomain>https://Solider1337.github.io</AppDomain>
     <AppDomain>https://backend-beta-one-53.vercel.app</AppDomain>
