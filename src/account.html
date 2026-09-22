@@ -581,7 +581,7 @@
             await loadAccount(tokenResult.idToken);
         } catch (e) {
             console.error('Login error', e);
-            alert('Sign in failed. Please try again.');
+            alert('Sign in failed. Error: ' + e.message);
         }
     }
 
