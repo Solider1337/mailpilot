@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - MailPilot AI</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #F8FAFC;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent: #4F46E5;
+            --border: #E2E8F0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0F172A;
+                --bg-secondary: #1E293B;
+                --text-primary: #F8FAFC;
+                --text-secondary: #94A3B8;
+                --border: #334155;
+            }
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        h1 { color: var(--text-primary); font-size: 2rem; margin-top: 0; }
+        p { color: var(--text-secondary); font-size: 1rem; margin-bottom: 24px; }
+        .faq-section { text-align: left; margin-top: 40px; border-top: 1px solid var(--border); padding-top: 30px; }
+        .faq-item { margin-bottom: 20px; }
+        .faq-question { font-weight: 600; color: var(--text-primary); margin-bottom: 5px; }
+        .faq-answer { color: var(--text-secondary); font-size: 0.95rem; }
+        .contact-email {
+            display: inline-block;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--accent);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+        }
+        .contact-email:hover {
+            background: rgba(79, 70, 229, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MailPilot AI Support</h1>
+        <p>Need help with your account, billing, or technical issues?<br>Our support team is here to assist you.</p>
+        
+        <a href="mailto:support@mailpilot.ai" class="contact-email">✉️ support@mailpilot.ai</a>
+
+        <div class="faq-section">
+            <div class="faq-item">
+                <div class="faq-question">How do I cancel my subscription?</div>
+                <div class="faq-answer">You can cancel your subscription at any time by clicking "My Account" in the add-in and managing your billing via the secure Stripe portal.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Are my emails stored?</div>
+                <div class="faq-answer">No. We process your emails in real-time to generate AI summaries and drafts. The content is securely transmitted, processed in memory, and immediately discarded. It is not used to train AI models.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">I paid but the app still says Trial Expired. What should I do?</div>
+                <div class="faq-answer">Please restart your Outlook completely to clear the cache. If the issue persists, contact our support email above.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
