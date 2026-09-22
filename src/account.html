@@ -396,12 +396,12 @@
 
                 <!-- Manage (shown for premium) -->
                 <div id="cta-manage" class="hidden" style="margin-top:16px;">
-                    <a id="link-stripe-portal" href="https://billing.stripe.com/p/login/dR6bJGdGM7sg1zq4gg" target="_blank" class="btn btn-secondary">
+                    <a id="link-stripe-portal" href="https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00" target="_blank" class="btn btn-secondary">
                         Manage Billing & Invoices
                     </a>
                     <!-- Cancel — subtly available but not screaming -->
                     <div style="text-align:center; margin-top:12px;">
-                        <a id="link-cancel" href="https://billing.stripe.com/p/login/dR6bJGdGM7sg1zq4gg" target="_blank" class="btn btn-danger-ghost">
+                        <a id="link-cancel" href="https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00" target="_blank" class="btn btn-danger-ghost">
                             Cancel subscription
                         </a>
                     </div>
@@ -559,6 +559,9 @@
 
         // CTA buttons
         if (data.plan === 'premium' || data.plan === 'b2b') {
+            const portalUrl = 'https://billing.stripe.com/p/login/aFabJ15g5gpJ47lbGq0gw00?prefilled_email=' + encodeURIComponent(email);
+            document.getElementById('link-stripe-portal').href = portalUrl;
+            document.getElementById('link-cancel').href = portalUrl;
             show('cta-manage');
         } else {
             // trial / expired / new_user -> show upgrade CTA
