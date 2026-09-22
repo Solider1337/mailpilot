@@ -189,6 +189,11 @@ function initSettings() {
 
   // Safe assignment – skip if element doesn't exist
   const el = (id) => document.getElementById(id);
+  if (el('btn-manage-plan')) {
+      el('btn-manage-plan').onclick = () => {
+          window.open('https://Solider1337.github.io/mailpilot/src/account.html', '_blank');
+      };
+  }
   if (el('btn-upgrade-premium')) el('btn-upgrade-premium').onclick = openCheckoutDialog;
   if (el('btn-start-trial'))    el('btn-start-trial').onclick    = openCheckoutDialog;
 }
