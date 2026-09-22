@@ -187,9 +187,8 @@ function initSettings() {
   // Expose globally so inline onclick attributes also work
   window.openCheckoutDialog = openCheckoutDialog;
 
-  // Safe assignment — skip if element doesn't exist
+  // Safe assignment – skip if element doesn't exist
   const el = (id) => document.getElementById(id);
-  if (el('btn-manage-plan'))    el('btn-manage-plan').onclick    = openCheckoutDialog;
   if (el('btn-upgrade-premium')) el('btn-upgrade-premium').onclick = openCheckoutDialog;
   if (el('btn-start-trial'))    el('btn-start-trial').onclick    = openCheckoutDialog;
 }
