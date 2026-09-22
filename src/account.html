@@ -509,6 +509,7 @@
         document.getElementById('row-trial-ends').style.display = 'none';
         show('cta-upgrade');
         hide('loading-screen');
+        hide('login-screen');
         show('account-panel');
     }
 
@@ -568,7 +569,8 @@
             document.getElementById('link-upgrade-account').href = checkoutUrl;
             show('cta-upgrade');
         }
-
+        
+        hide('login-screen');
         hide('loading-screen');
         show('account-panel');
     }
