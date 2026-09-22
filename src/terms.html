@@ -3,26 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MailPilot - Terms of Use</title>
+    <title>Terms of Service - MailPilot AI</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1, h2 { color: #111; }
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #F8FAFC;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent: #4F46E5;
+            --border: #E2E8F0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0F172A;
+                --bg-secondary: #1E293B;
+                --text-primary: #F8FAFC;
+                --text-secondary: #94A3B8;
+                --border: #334155;
+            }
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+        h1 { color: var(--text-primary); font-size: 2rem; margin-top: 0; }
+        h2 { color: var(--text-primary); font-size: 1.25rem; margin-top: 30px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        p, li { color: var(--text-secondary); font-size: 0.95rem; }
+        .last-updated { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 30px; }
     </style>
 </head>
 <body>
-    <h1>Terms of Use for MailPilot</h1>
-    <p><strong>Last Updated: August 2026</strong></p>
+    <div class="container">
+        <h1>Terms of Service</h1>
+        <div class="last-updated">Last Updated: September 2026</div>
 
-    <h2>1. Acceptance of Terms</h2>
-    <p>By installing and using the MailPilot add-in, you agree to these Terms of Use.</p>
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing and using the MailPilot AI Outlook Add-in ("Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.</p>
 
-    <h2>2. Usage Restrictions</h2>
-    <p>You agree to use MailPilot in compliance with all applicable laws and regulations. You are responsible for ensuring that you have the right to send the email content you analyze to the Google Gemini API.</p>
+        <h2>2. Description of Service</h2>
+        <p>MailPilot AI provides an artificial intelligence-powered email assistant that integrates with Microsoft Outlook to summarize emails, extract action items, and generate draft replies.</p>
 
-    <h2>3. Disclaimer of Warranties</h2>
-    <p>MailPilot is provided "as is" without warranty of any kind. The AI-generated summaries, priorities, and draft replies are suggestions and should be reviewed by a human before taking action.</p>
+        <h2>3. AI Output and User Responsibility (CRITICAL)</h2>
+        <p><strong>3.1 Verification Required:</strong> The Service utilizes third-party Large Language Models (LLMs). AI-generated content may be inaccurate, incomplete, or inappropriate. You acknowledge that you are solely responsible for reviewing, editing, and verifying all AI-generated drafts, summaries, and extractions BEFORE sending or acting upon them.</p>
+        <p><strong>3.2 No Liability for Content:</strong> Under no circumstances shall MailPilot AI or its creators be liable for any direct, indirect, incidental, or consequential damages resulting from emails sent using our Service, including loss of business, miscommunication, or reputational damage.</p>
 
-    <h2>4. Limitation of Liability</h2>
-    <p>In no event shall Autome be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of MailPilot.</p>
+        <h2>4. Subscriptions and Payments</h2>
+        <p><strong>4.1 Billing:</strong> The Service is offered on a subscription basis via Stripe. By subscribing, you authorize us to charge your provided payment method on a recurring basis.</p>
+        <p><strong>4.2 Free Trial:</strong> We may offer a 7-day free trial. If you do not cancel before the trial expires, you will be billed automatically.</p>
+        <p><strong>4.3 Cancellation:</strong> You may cancel your subscription at any time via the Stripe billing portal. Access will continue until the end of your current billing cycle.</p>
+
+        <h2>5. Privacy and Data Processing</h2>
+        <p>Your use of the Service is also governed by our Privacy Policy. By using the Service, you consent to the processing of your email content strictly for the purpose of generating AI responses. We do not use your private email data to train our own AI models.</p>
+
+        <h2>6. Disclaimers and Limitation of Liability</h2>
+        <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</p>
+
+        <h2>7. Contact Information</h2>
+        <p>If you have any questions regarding these terms, please contact us via our Support page.</p>
+    </div>
 </body>
 </html>

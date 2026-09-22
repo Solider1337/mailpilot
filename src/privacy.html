@@ -3,27 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MailPilot - Privacy Policy</title>
+    <title>Privacy Policy - MailPilot AI</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1, h2 { color: #111; }
-        a { color: #0078D4; }
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #F8FAFC;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent: #4F46E5;
+            --border: #E2E8F0;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0F172A;
+                --bg-secondary: #1E293B;
+                --text-primary: #F8FAFC;
+                --text-secondary: #94A3B8;
+                --border: #334155;
+            }
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-primary);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border: 1px solid var(--border);
+        }
+        h1 { color: var(--text-primary); font-size: 2rem; margin-top: 0; }
+        h2 { color: var(--text-primary); font-size: 1.25rem; margin-top: 30px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        p, li { color: var(--text-secondary); font-size: 0.95rem; }
+        .last-updated { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 30px; }
     </style>
 </head>
 <body>
-    <h1>Privacy Policy for MailPilot</h1>
-    <p><strong>Last Updated: August 2026</strong></p>
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <div class="last-updated">Last Updated: September 2026</div>
 
-    <h2>1. Data We Collect</h2>
-    <p>MailPilot is a client-side application. It processes your emails locally within your browser/Outlook client and sends them directly to the Google Gemini API for analysis. We do not store, log, or transmit your emails to any of our own servers.</p>
+        <h2>1. Introduction</h2>
+        <p>Your privacy is important to us. This Privacy Policy explains how MailPilot AI ("we", "us", or "our") collects, uses, and protects your information when you use our Outlook Add-in, in compliance with applicable laws including the General Data Protection Regulation (GDPR).</p>
 
-    <h2>2. API Keys</h2>
-    <p>Your Google Gemini API key is stored locally in your browser's <code>localStorage</code>. It is never transmitted to us or any third party, except directly to Google's API servers to perform the requested AI analysis.</p>
+        <h2>2. Data We Collect</h2>
+        <ul>
+            <li><strong>Account Information:</strong> We collect your email address via Microsoft Single Sign-On (SSO) to create and manage your account and subscription.</li>
+            <li><strong>Email Content (Transient Processing):</strong> To provide AI analysis, the text of the emails you explicitly choose to analyze is securely transmitted to our backend.</li>
+            <li><strong>Payment Information:</strong> Handled entirely by our payment processor (Stripe). We do not store your credit card details.</li>
+        </ul>
 
-    <h2>3. Third-Party Services</h2>
-    <p>MailPilot uses the Google Gemini API. By using MailPilot, your email content is sent to Google for processing in accordance with Google's API Terms of Service and Privacy Policy.</p>
+        <h2>3. How We Process Email Content & AI</h2>
+        <p><strong>Strictly in-transit:</strong> The email content you process using MailPilot AI is sent securely to our third-party LLM providers (e.g., OpenAI). This data is processed <em>in-memory</em> and is <strong>NOT permanently stored</strong> in our databases, nor is it used by us or our AI providers to train foundational AI models.</p>
 
-    <h2>4. Contact</h2>
-    <p>If you have any questions about this Privacy Policy, please contact the publisher (Autome).</p>
+        <h2>4. Third-Party Service Providers</h2>
+        <p>We use trusted third-party services to operate MailPilot AI:</p>
+        <ul>
+            <li><strong>Microsoft:</strong> For SSO authentication and Outlook integration.</li>
+            <li><strong>Stripe:</strong> For secure payment processing.</li>
+            <li><strong>Supabase:</strong> For secure database hosting (storing your email address and subscription status).</li>
+            <li><strong>Vercel:</strong> For secure backend API hosting.</li>
+        </ul>
+
+        <h2>5. Your Rights (GDPR)</h2>
+        <p>If you are a resident of the European Economic Area (EEA), you have the right to:</p>
+        <ul>
+            <li>Access the personal data we hold about you.</li>
+            <li>Request the deletion of your account and personal data (Right to be Forgotten).</li>
+            <li>Withdraw consent at any time (e.g., by uninstalling the add-in and cancelling your subscription).</li>
+        </ul>
+
+        <h2>6. Contact Us</h2>
+        <p>If you have any privacy-related questions or wish to exercise your data rights, please contact us via our Support page.</p>
+    </div>
 </body>
 </html>
