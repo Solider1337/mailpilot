@@ -573,32 +573,25 @@
         show('account-panel');
     }
 
-    async function signIn() {
-        try {
-            const result = await msalInstance.loginPopup({ scopes: SCOPES });
-            msalInstance.setActiveAccount(result.account);
-            const tokenResult = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: result.account });
-            await loadAccount(tokenResult.idToken);
-        } catch (e) {
-            console.error('Login error', e);
-            alert('Sign in failed. Error: ' + e.message);
-        }
+    function signIn() {
+        msalInstance.loginRedirect({ scopes: SCOPES });
     }
 
     function signOut() {
-        msalInstance.logoutPopup();
+        msalInstance.logoutRedirect();
     }
 
     async function init() {
         await msalInstance.initialize();
 
-        // Handle redirect
         try {
             const result = await msalInstance.handleRedirectPromise();
-            if (result) {
+            if (result && result.account) {
                 msalInstance.setActiveAccount(result.account);
             }
-        } catch(e) {}
+        } catch(e) {
+            console.error('Redirect error:', e);
+        }
 
         const accounts = msalInstance.getAllAccounts();
         if (accounts.length > 0) {
@@ -608,7 +601,7 @@
                 await loadAccount(tokenResult.idToken);
                 return;
             } catch (e) {
-                // Silent failed — fall through to login screen
+                console.error('Silent token acquisition failed', e);
             }
         }
 
