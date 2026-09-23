@@ -172,12 +172,12 @@ function initSettings() {
     // Ustawienie różnych URLi w zależności od przycisku
     const linkTrial = document.getElementById('link-start-trial');
     if (linkTrial) {
-        linkTrial.href = checkoutUrlBase + (emailParam ? '&' : '?') + 'type=trial';
+        linkTrial.href = checkoutUrlBase + (emailParam '&' : '?') + 'type=trial';
     }
     
     const linkUpgrade = document.getElementById('link-upgrade');
     if (linkUpgrade) {
-        linkUpgrade.href = checkoutUrlBase + (emailParam ? '&' : '?') + 'type=direct';
+        linkUpgrade.href = checkoutUrlBase + (emailParam '&' : '?') + 'type=direct';
     }
   };
 
@@ -238,7 +238,7 @@ if (typeof Office !== 'undefined') {
       );
 
       // Zabezpieczenie (Fallback): Wymuszone sprawdzanie zmiany maila co 1 sekundę
-      let lastItemId = Office.context.mailbox.item ? Office.context.mailbox.item.itemId : null;
+      let lastItemId = Office.context.mailbox.item Office.context.mailbox.item.itemId : null;
       setInterval(() => {
         const currentItem = Office.context.mailbox.item;
         if (currentItem && currentItem.itemId !== lastItemId) {
@@ -278,7 +278,7 @@ async function readCurrentEmail() {
 
   const subject = item.subject || '';
   const sender = item.from
-    ? `${item.from.displayName || ''} <${item.from.emailAddress || ''}>`
+    `${item.from.displayName || ''} <${item.from.emailAddress || ''}>`
     : '';
   const recipients = (item.to || []).map(
     (r) => r.emailAddress || r.displayName || ''
@@ -662,7 +662,7 @@ function renderExtractedData(data) {
           <span class="task-label">Task ${i + 1}</span>
         </div>
         <div class="task-title">${esc(t.task)}</div>
-        ${t.deadline ? `<div class="task-time">${esc(t.deadline)}</div>` : ''}
+        ${t.deadline `<div class="task-time">${esc(t.deadline)}</div>` : ''}
       `;
       tasksGrid.appendChild(div);
     });
@@ -681,7 +681,7 @@ function renderExtractedData(data) {
       data.extracted_contacts.forEach((c) => {
         const div = document.createElement('div');
         div.className = 'contact-card';
-        const initial = c.name ? c.name.charAt(0).toUpperCase() : '?';
+        const initial = c.name c.name.charAt(0).toUpperCase() : '?';
         div.innerHTML = `
           <div class="contact-avatar">${initial}</div>
           <div class="contact-info">
