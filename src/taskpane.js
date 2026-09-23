@@ -22,7 +22,7 @@ const PRIORITY_LABELS = {
 const DICT = {
   pl: {
     settingsTitle: "Ustawienia", languageLabel: "Język aplikacji:", themeLabel: "Motyw:", themeLight: "Jasny", themeDark: "Ciemny", planLabel: "Subskrypcja:", managePlanBtn: "Zarządzaj",
-    riskDetected: "Wykryto ryzyko:", summary: "Podsumowanie", keyTakeaways: "Kluczowe informacje", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Wykryto ryzyko:", summary: "Podsumowanie", keyTakeaways: "Kluczowe informacje", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Gotowa odpowiedź", tabCustom: "Własna odpowiedź", chooseStyle: "Wybierz styl odpowiedzi:", copy: "Kopiuj",
     instructionForAi: "Instrukcja dla AI:", generateReply: "Generuj odpowiedź", result: "Wynik:",
     actionItems: "Zadania do wykonania", extractedEntities: "Wykryte informacje", contacts: "Kontakty", datesEvents: "Daty / Wydarzenia", financials: "Finanse",
@@ -31,7 +31,7 @@ const DICT = {
   },
   en: {
     settingsTitle: "Settings", languageLabel: "App Language:", themeLabel: "Theme:", themeLight: "Light", themeDark: "Dark", planLabel: "Subscription:", managePlanBtn: "Manage",
-    riskDetected: "Risk detected:", summary: "Summary", keyTakeaways: "Key Takeaways", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Risk detected:", summary: "Summary", keyTakeaways: "Key Takeaways", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Preset Reply", tabCustom: "Custom Reply", chooseStyle: "Choose reply style:", copy: "Copy",
     instructionForAi: "Instruction for AI:", generateReply: "Generate Reply", result: "Result:",
     actionItems: "Action Items & Tasks", extractedEntities: "Extracted Entities", contacts: "Contacts", datesEvents: "Dates / Events", financials: "Financials",
@@ -40,7 +40,7 @@ const DICT = {
   },
   de: {
     settingsTitle: "Einstellungen", languageLabel: "Sprache:", themeLabel: "Thema:", themeLight: "Hell", themeDark: "Dunkel", planLabel: "Abonnement:", managePlanBtn: "Verwalten",
-    riskDetected: "Risiko erkannt:", summary: "Zusammenfassung", keyTakeaways: "Wichtigste Punkte", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Risiko erkannt:", summary: "Zusammenfassung", keyTakeaways: "Wichtigste Punkte", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Vorgefertigte Antwort", tabCustom: "Eigene Antwort", chooseStyle: "Antwortstil wählen:", copy: "Kopieren",
     instructionForAi: "Anweisung für KI:", generateReply: "Antwort generieren", result: "Ergebnis:",
     actionItems: "Aufgaben", extractedEntities: "Extrahierte Entitäten", contacts: "Kontakte", datesEvents: "Daten / Ereignisse", financials: "Finanzen",
@@ -48,7 +48,7 @@ const DICT = {
   },
   es: {
     settingsTitle: "Configuración", languageLabel: "Idioma:", themeLabel: "Tema:", themeLight: "Claro", themeDark: "Oscuro", planLabel: "Suscripción:", managePlanBtn: "Gestionar",
-    riskDetected: "Riesgo detectado:", summary: "Resumen", keyTakeaways: "Puntos clave", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Riesgo detectado:", summary: "Resumen", keyTakeaways: "Puntos clave", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Respuesta predefinida", tabCustom: "Respuesta personalizada", chooseStyle: "Elige el estilo:", copy: "Copiar",
     instructionForAi: "Instrucción para IA:", generateReply: "Generar respuesta", result: "Resultado:",
     actionItems: "Tareas", extractedEntities: "Entidades extraídas", contacts: "Contactos", datesEvents: "Fechas / Eventos", financials: "Finanzas",
@@ -56,7 +56,7 @@ const DICT = {
   },
   fr: {
     settingsTitle: "Paramètres", languageLabel: "Langue:", themeLabel: "Thème:", themeLight: "Clair", themeDark: "Sombre", planLabel: "Abonnement:", managePlanBtn: "Gérer",
-    riskDetected: "Risque détecté:", summary: "Résumé", keyTakeaways: "Points clés", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Risque détecté:", summary: "Résumé", keyTakeaways: "Points clés", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Réponse prédéfinie", tabCustom: "Réponse personnalisée", chooseStyle: "Choisir le style:", copy: "Copier",
     instructionForAi: "Instruction pour l'IA:", generateReply: "Générer la réponse", result: "Résultat:",
     actionItems: "Tâches", extractedEntities: "Entités extraites", contacts: "Contacts", datesEvents: "Dates / Événements", financials: "Finances",
@@ -64,7 +64,7 @@ const DICT = {
   },
   it: {
     settingsTitle: "Impostazioni", languageLabel: "Lingua:", themeLabel: "Tema:", themeLight: "Chiaro", themeDark: "Scuro", planLabel: "Abbonamento:", managePlanBtn: "Gestisci",
-    riskDetected: "Rischio rilevato:", summary: "Riepilogo", keyTakeaways: "Punti chiave", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Rischio rilevato:", summary: "Riepilogo", keyTakeaways: "Punti chiave", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Risposta predefinita", tabCustom: "Risposta personalizzata", chooseStyle: "Scegli lo stile:", copy: "Copia",
     instructionForAi: "Istruzione per IA:", generateReply: "Genera risposta", result: "Risultato:",
     actionItems: "Attività", extractedEntities: "Entità estratte", contacts: "Contatti", datesEvents: "Date / Eventi", financials: "Finanze",
@@ -72,7 +72,7 @@ const DICT = {
   },
   pt: {
     settingsTitle: "Configurações", languageLabel: "Idioma:", themeLabel: "Tema:", themeLight: "Claro", themeDark: "Escuro", planLabel: "Assinatura:", managePlanBtn: "Gerenciar",
-    riskDetected: "Risco detectado:", summary: "Resumo", keyTakeaways: "Pontos chave", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Risco detectado:", summary: "Resumo", keyTakeaways: "Pontos chave", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Resposta predefinida", tabCustom: "Resposta personalizada", chooseStyle: "Escolher o estilo:", copy: "Copiar",
     instructionForAi: "Instrução para IA:", generateReply: "Gerar resposta", result: "Resultado:",
     actionItems: "Tarefas", extractedEntities: "Entidades extraídas", contacts: "Contatos", datesEvents: "Datas / Eventos", financials: "Finanças",
@@ -80,7 +80,7 @@ const DICT = {
   },
   uk: {
     settingsTitle: "Налаштування", languageLabel: "Мова:", themeLabel: "Тема:", themeLight: "Світла", themeDark: "Темна", planLabel: "Підписка:", managePlanBtn: "Керувати",
-    riskDetected: "Виявлено ризик:", summary: "Резюме", keyTakeaways: "Ключові моменти", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "Виявлено ризик:", summary: "Резюме", keyTakeaways: "Ключові моменти", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "Готова відповідь", tabCustom: "Власна відповідь", chooseStyle: "Виберіть стиль:", copy: "Копіювати",
     instructionForAi: "Інструкція для ШІ:", generateReply: "Згенерувати відповідь", result: "Результат:",
     actionItems: "Завдання", extractedEntities: "Витягнуті дані", contacts: "Контакти", datesEvents: "Дати / Події", financials: "Фінанси",
@@ -88,7 +88,7 @@ const DICT = {
   },
   zh: {
     settingsTitle: "设置", languageLabel: "语言:", themeLabel: "主题:", themeLight: "浅色", themeDark: "深色", planLabel: "订阅:", managePlanBtn: "管理",
-    riskDetected: "检测到风险:", summary: "摘要", keyTakeaways: "关键信息", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "检测到风险:", summary: "摘要", keyTakeaways: "关键信息", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "预设回复", tabCustom: "自定义回复", chooseStyle: "选择回复风格:", copy: "复制",
     instructionForAi: "AI指令:", generateReply: "生成回复", result: "结果:",
     actionItems: "任务", extractedEntities: "提取的实体", contacts: "联系人", datesEvents: "日期 / 事件", financials: "财务",
@@ -96,7 +96,7 @@ const DICT = {
   },
   ja: {
     settingsTitle: "設定", languageLabel: "言語:", themeLabel: "テーマ:", themeLight: "ライト", themeDark: "ダーク", planLabel: "サブスクリプション:", managePlanBtn: "管理",
-    riskDetected: "リスクを検出:", summary: "要約", keyTakeaways: "重要なポイント", mailMaestroMode: "✨ Mail Maestro Mode",
+    riskDetected: "リスクを検出:", summary: "要約", keyTakeaways: "重要なポイント", mailMaestroMode: "Mail Maestro Mode",
     tabPreset: "定型返信", tabCustom: "カスタム返信", chooseStyle: "返信スタイルを選択:", copy: "コピー",
     instructionForAi: "AIへの指示:", generateReply: "返信を生成", result: "結果:",
     actionItems: "タスク", extractedEntities: "抽出された情報", contacts: "連絡先", datesEvents: "日付 / イベント", financials: "財務",
@@ -172,12 +172,12 @@ function initSettings() {
     // Ustawienie różnych URLi w zależności od przycisku
     const linkTrial = document.getElementById('link-start-trial');
     if (linkTrial) {
-        linkTrial.href = checkoutUrlBase + (emailParam '&' : '?') + 'type=trial';
+        linkTrial.href = checkoutUrlBase + (emailParam ? '&' : '?') + 'type=trial';
     }
     
     const linkUpgrade = document.getElementById('link-upgrade');
     if (linkUpgrade) {
-        linkUpgrade.href = checkoutUrlBase + (emailParam '&' : '?') + 'type=direct';
+        linkUpgrade.href = checkoutUrlBase + (emailParam ? '&' : '?') + 'type=direct';
     }
   };
 
@@ -238,7 +238,7 @@ if (typeof Office !== 'undefined') {
       );
 
       // Zabezpieczenie (Fallback): Wymuszone sprawdzanie zmiany maila co 1 sekundę
-      let lastItemId = Office.context.mailbox.item Office.context.mailbox.item.itemId : null;
+      let lastItemId = Office.context.mailbox.item ? Office.context.mailbox.item.itemId : null;
       setInterval(() => {
         const currentItem = Office.context.mailbox.item;
         if (currentItem && currentItem.itemId !== lastItemId) {
@@ -278,7 +278,7 @@ async function readCurrentEmail() {
 
   const subject = item.subject || '';
   const sender = item.from
-    `${item.from.displayName || ''} <${item.from.emailAddress || ''}>`
+    ? `${item.from.displayName || ''} <${item.from.emailAddress || ''}>`
     : '';
   const recipients = (item.to || []).map(
     (r) => r.emailAddress || r.displayName || ''
@@ -662,7 +662,7 @@ function renderExtractedData(data) {
           <span class="task-label">Task ${i + 1}</span>
         </div>
         <div class="task-title">${esc(t.task)}</div>
-        ${t.deadline `<div class="task-time">${esc(t.deadline)}</div>` : ''}
+        ${t.deadline ? `<div class="task-time">${esc(t.deadline)}</div>` : ''}
       `;
       tasksGrid.appendChild(div);
     });
@@ -681,7 +681,7 @@ function renderExtractedData(data) {
       data.extracted_contacts.forEach((c) => {
         const div = document.createElement('div');
         div.className = 'contact-card';
-        const initial = c.name c.name.charAt(0).toUpperCase() : '?';
+        const initial = c.name ? c.name.charAt(0).toUpperCase() : '?';
         div.innerHTML = `
           <div class="contact-avatar">${initial}</div>
           <div class="contact-info">
